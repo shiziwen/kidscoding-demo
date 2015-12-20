@@ -113,4 +113,23 @@
     label.text = item.text;
 }
 
+- (IBAction)addItem:(id)sender {
+    NSInteger newRowIndex = [_items count];
+    ChecklitItem *item = [[ChecklitItem alloc]init];
+    item.text = @"new text";
+    item.checked = NO;
+    [_items addObject:item];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
+    NSArray *indexPaths = @[indexPath];
+    
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [_items removeObjectAtIndex:indexPath.row];
+    
+    NSArray *indexPaths = @[indexPath];
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
 @end
