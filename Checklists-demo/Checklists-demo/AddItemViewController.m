@@ -37,6 +37,24 @@
 }
 
 - (IBAction)done:(id)sender {
+    NSLog(@"inputs is %@", self.textField.text);
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    return nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.textField becomeFirstResponder];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    self.doneBarButton.enabled = ([newText length] > 0);
+    
+    return YES;
 }
 @end

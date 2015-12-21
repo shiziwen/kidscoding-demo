@@ -6,13 +6,13 @@
 //  Copyright © 2015年 shiziwen. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "ChecklistsViewController.h"
 
-@interface ViewController ()
+@interface ChecklistsViewController ()
 
 @end
 
-@implementation ViewController {
+@implementation ChecklistsViewController {
     NSMutableArray *_items;
 }
 
