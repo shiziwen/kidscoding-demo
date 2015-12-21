@@ -14,6 +14,7 @@
 		04427D0B1C23FC060025D7D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04427D091C23FC060025D7D1 /* Main.storyboard */; };
 		04427D0D1C23FC060025D7D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04427D0C1C23FC060025D7D1 /* Assets.xcassets */; };
 		04427D101C23FC060025D7D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04427D0E1C23FC060025D7D1 /* LaunchScreen.storyboard */; };
+		047D90531C26CA8D008EAB4F /* AddItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D90521C26CA8D008EAB4F /* AddItemViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		04427D0C1C23FC060025D7D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04427D0F1C23FC060025D7D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04427D111C23FC060025D7D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		047D90511C26CA8D008EAB4F /* AddItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddItemViewController.h; sourceTree = "<group>"; };
+		047D90521C26CA8D008EAB4F /* AddItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddItemViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,8 @@
 				04427D061C23FC060025D7D1 /* ViewController.h */,
 				04427D071C23FC060025D7D1 /* ViewController.m */,
 				04427D091C23FC060025D7D1 /* Main.storyboard */,
+				047D90511C26CA8D008EAB4F /* AddItemViewController.h */,
+				047D90521C26CA8D008EAB4F /* AddItemViewController.m */,
 				04427D0C1C23FC060025D7D1 /* Assets.xcassets */,
 				04427D0E1C23FC060025D7D1 /* LaunchScreen.storyboard */,
 				04427D111C23FC060025D7D1 /* Info.plist */,
@@ -157,6 +162,7 @@
 				04427D081C23FC060025D7D1 /* ViewController.m in Sources */,
 				04427D051C23FC060025D7D1 /* AppDelegate.m in Sources */,
 				04427D021C23FC060025D7D1 /* main.m in Sources */,
+				047D90531C26CA8D008EAB4F /* AddItemViewController.m in Sources */,
 				0418D1351C2581020036C70B /* ChecklitItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
