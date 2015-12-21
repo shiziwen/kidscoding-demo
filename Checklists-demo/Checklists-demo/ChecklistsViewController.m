@@ -136,11 +136,11 @@
 }
 
 // 代理实现
-- (void)addItemViewControllerDidCancel:(AddItemViewController *)controller {
+- (void)itemDetailViewControllerDidCancel:(ItemDetailViewController *)controller {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)addItemViewController:(AddItemViewController *)controller didFinishAddingItem:(ChecklistItem *)item {
+- (void)itemDetailViewController:(ItemDetailViewController *)controller didFinishAddingItem:(ChecklistItem *)item {
     NSInteger newRowIndex = [_items count];
     [_items addObject:item];
     
@@ -151,7 +151,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)addItemVIewcontroller:(AddItemViewController *)controller didFinishEditingItem:(ChecklistItem *)item {
+- (void)itemDetailViewController:(ItemDetailViewController *)controller didFinishEditingItem:(ChecklistItem *)item {
     NSInteger index = [_items indexOfObject:item];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -164,11 +164,11 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"AddItem"]) {
         UINavigationController *navigationController = segue.destinationViewController;
-        AddItemViewController *controller = (AddItemViewController *)navigationController.topViewController;
+        ItemDetailViewController *controller = (ItemDetailViewController *)navigationController.topViewController;
         controller.delegate = self;
     } else if ([segue.identifier isEqualToString:@"EditItem"]) {
         UINavigationController *navigationController = segue.destinationViewController;
-        AddItemViewController *controller = (AddItemViewController *)navigationController.topViewController;
+        ItemDetailViewController *controller = (ItemDetailViewController *)navigationController.topViewController;
         controller.delegate = self;
         
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
