@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ChecklitItem : NSObject
+@interface ChecklistItem : NSObject
 
 @property(atomic, copy)NSString *text;
 @property(atomic, assign)BOOL checked;

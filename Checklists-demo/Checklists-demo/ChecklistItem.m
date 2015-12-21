@@ -6,9 +6,9 @@
 //  Copyright © 2015年 shiziwen. All rights reserved.
 //
 
-#import "ChecklitItem.h"
+#import "ChecklistItem.h"
 
-@implementation ChecklitItem
+@implementation ChecklistItem
 
 - (void)toggleChecked {
     self.checked = !self.checked;

@@ -25,29 +25,29 @@
     
     BOOL checkedDefault = NO;
     
-    ChecklitItem *item;
+    ChecklistItem *item;
     
-    item = [[ChecklitItem alloc]init];
+    item = [[ChecklistItem alloc]init];
     item.text = @"text1";
     item.checked = checkedDefault;
     [_items addObject:item];
     
-    item = [[ChecklitItem alloc]init];
+    item = [[ChecklistItem alloc]init];
     item.text = @"text2";
     item.checked = checkedDefault;
     [_items addObject:item];
     
-    item = [[ChecklitItem alloc]init];
+    item = [[ChecklistItem alloc]init];
     item.text = @"text3";
     item.checked = checkedDefault;
     [_items addObject:item];
     
-    item = [[ChecklitItem alloc]init];
+    item = [[ChecklistItem alloc]init];
     item.text = @"text4";
     item.checked = checkedDefault;
     [_items addObject:item];
     
-    item = [[ChecklitItem alloc]init];
+    item = [[ChecklistItem alloc]init];
     item.text = @"text5";
     item.checked = checkedDefault;
     [_items addObject:item];
@@ -70,7 +70,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChecklistItem"];
     
-    ChecklitItem *item = _items[indexPath.row];
+    ChecklistItem *item = _items[indexPath.row];
     
     [self configureCheckmarkForCell:cell withChecklistItem:item];
     [self configureTextForCell:cell withChecklistItem:item];
@@ -81,7 +81,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    ChecklitItem *item = _items[indexPath.row];
+    ChecklistItem *item = _items[indexPath.row];
 
     [item toggleChecked];
     [self configureCheckmarkForCell:cell withChecklistItem:item];
@@ -91,7 +91,7 @@
 }
 
 - (void)configureItemForCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    ChecklitItem *item = _items[indexPath.row];
+    ChecklistItem *item = _items[indexPath.row];
     
     if (item.checked) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -100,7 +100,7 @@
     }
 }
 
-- (void)configureCheckmarkForCell:(UITableViewCell *)cell withChecklistItem:(ChecklitItem *)item {
+- (void)configureCheckmarkForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistItem *)item {
     if (item.checked) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
@@ -108,14 +108,14 @@
     }
 }
 
-- (void)configureTextForCell:(UITableViewCell *)cell withChecklistItem:(ChecklitItem *)item {
+- (void)configureTextForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistItem *)item {
     UILabel *label = (UILabel *)[cell viewWithTag:1000];
     label.text = item.text;
 }
 
 - (IBAction)addItem:(id)sender {
     NSInteger newRowIndex = [_items count];
-    ChecklitItem *item = [[ChecklitItem alloc]init];
+    ChecklistItem *item = [[ChecklistItem alloc]init];
     item.text = @"new text";
     item.checked = NO;
     [_items addObject:item];
@@ -131,5 +131,28 @@
     
     NSArray *indexPaths = @[indexPath];
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)addItemViewControllerDidCancel:(AddItemViewController *)controller {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)addItemViewController:(AddItemViewController *)controller didFinishAddingItem:(ChecklistItem *)item {
+    NSInteger newRowIndex = [_items count];
+    [_items addObject:item];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newRowIndex inSection:0];
+    NSArray *indexPaths = @[indexPath];
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"AddItem"]) {
+        UINavigationController *navigationController = segue.destinationViewController;
+        AddItemViewController *controller = (AddItemViewController *)navigationController.topViewController;
+        controller.delegate = self;
+    }
 }
 @end

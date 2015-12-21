@@ -6,10 +6,11 @@
 //  Copyright © 2015年 shiziwen. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "ChecklitItem.h"
+#import <UIKit/UIKit.h> 
+#import "AddItemViewController.h"
+#import "ChecklistItem.h"
 
-@interface ChecklistsViewController : UITableViewController
+@interface ChecklistsViewController : UITableViewController<AddItemViewControllerDelegate>
 
 - (IBAction)addItem:(id)sender;
 
