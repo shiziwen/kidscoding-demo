@@ -15,6 +15,7 @@
 
 - (void)addItemViewControllerDidCancel: (AddItemViewController *)controller;
 - (void)addItemViewController: (AddItemViewController *)controller didFinishAddingItem:(ChecklistItem *) item;
+- (void)addItemVIewcontroller: (AddItemViewController *)controller didFinishEditingItem:(ChecklistItem *) item;
 
 @end
 
@@ -25,4 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneBarButton;
 
 @property(weak, nonatomic) id <AddItemViewControllerDelegate> delegate;
+
+@property(strong, nonatomic) ChecklistItem *itemToEdit;
 @end
