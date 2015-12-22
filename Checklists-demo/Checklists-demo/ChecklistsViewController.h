@@ -12,7 +12,6 @@
 
 @interface ChecklistsViewController : UITableViewController<ItemDetailViewControllerDelegate>
 
-- (IBAction)addItem:(id)sender;
 
 @end
 

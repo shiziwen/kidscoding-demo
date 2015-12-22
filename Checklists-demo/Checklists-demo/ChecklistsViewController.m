@@ -16,42 +16,88 @@
     NSMutableArray *_items;
 }
 
+// 加载数据
+- (void)loadChecklistItems {
+    NSString *path = [self dataFilePath];
+    
+    if ([[NSFileManager defaultManager]fileExistsAtPath:path]) {
+        NSData *data = [[NSData alloc]initWithContentsOfFile:path];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+        _items = [unarchiver decodeObjectForKey:@"ChecklistItems"];
+        [unarchiver finishDecoding];
+    } else {
+        _items = [[NSMutableArray alloc]initWithCapacity:20];
+    }
+}
+
+// 从storyboard中自动加载的视图控制器就会使 该初始化方法
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super initWithCoder:aDecoder])) {
+        [self loadChecklistItems];
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad {
-    NSLog(@"did load");
     [super viewDidLoad];
+
+    NSLog(@"direcory is: %@", [self documentsDirectory]);
+    NSLog(@"file path is: %@", [self dataFilePath]);
     
     // Do any additional setup after loading the view, typically from a nib.
-    _items = [[NSMutableArray alloc]initWithCapacity:20];
+//    _items = [[NSMutableArray alloc]initWithCapacity:20];
+//    
+//    BOOL checkedDefault = NO;
+//    
+//    ChecklistItem *item;
+//    
+//    item = [[ChecklistItem alloc]init];
+//    item.text = @"text1";
+//    item.checked = checkedDefault;
+//    [_items addObject:item];
+//    
+//    item = [[ChecklistItem alloc]init];
+//    item.text = @"text2";
+//    item.checked = checkedDefault;
+//    [_items addObject:item];
+//    
+//    item = [[ChecklistItem alloc]init];
+//    item.text = @"text3";
+//    item.checked = checkedDefault;
+//    [_items addObject:item];
+//    
+//    item = [[ChecklistItem alloc]init];
+//    item.text = @"text4";
+//    item.checked = checkedDefault;
+//    [_items addObject:item];
+//    
+//    item = [[ChecklistItem alloc]init];
+//    item.text = @"text5";
+//    item.checked = checkedDefault;
+//    [_items addObject:item];
     
-    BOOL checkedDefault = NO;
+}
+
+// 缓存目录
+- (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
     
-    ChecklistItem *item;
-    
-    item = [[ChecklistItem alloc]init];
-    item.text = @"text1";
-    item.checked = checkedDefault;
-    [_items addObject:item];
-    
-    item = [[ChecklistItem alloc]init];
-    item.text = @"text2";
-    item.checked = checkedDefault;
-    [_items addObject:item];
-    
-    item = [[ChecklistItem alloc]init];
-    item.text = @"text3";
-    item.checked = checkedDefault;
-    [_items addObject:item];
-    
-    item = [[ChecklistItem alloc]init];
-    item.text = @"text4";
-    item.checked = checkedDefault;
-    [_items addObject:item];
-    
-    item = [[ChecklistItem alloc]init];
-    item.text = @"text5";
-    item.checked = checkedDefault;
-    [_items addObject:item];
-    
+    return documentsDirectory;
+}
+
+- (NSString *)dataFilePath {
+    return [[self documentsDirectory]stringByAppendingPathComponent:@"Checklists.plist"];
+}
+
+// 保存checklist items
+- (void)saveChecklistItems {
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:_items forKey:@"ChecklistItems"];
+    [archiver finishEncoding];
+    [data writeToFile:[self dataFilePath] atomically:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,6 +124,7 @@
     return cell;
 }
 
+// 点击行
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
@@ -85,6 +132,7 @@
 
     [item toggleChecked];
     [self configureCheckmarkForCell:cell withChecklistItem:item];
+    [self saveChecklistItems];
     
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -100,6 +148,7 @@
     }
 }
 
+// 配置checkitem的lchecked
 - (void)configureCheckmarkForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistItem *)item {
     UILabel *label = (UILabel *)[cell viewWithTag:1001];
     
@@ -110,26 +159,16 @@
     }
 }
 
+// 配置checkitem的text
 - (void)configureTextForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistItem *)item {
     UILabel *label = (UILabel *)[cell viewWithTag:1000];
     label.text = item.text;
 }
 
-- (IBAction)addItem:(id)sender {
-    NSInteger newRowIndex = [_items count];
-    ChecklistItem *item = [[ChecklistItem alloc]init];
-    item.text = @"new text";
-    item.checked = NO;
-    [_items addObject:item];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
-    NSArray *indexPaths = @[indexPath];
-    
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
+// 滑动删除
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     [_items removeObjectAtIndex:indexPath.row];
+    [self saveChecklistItems];
     
     NSArray *indexPaths = @[indexPath];
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -147,6 +186,7 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:newRowIndex inSection:0];
     NSArray *indexPaths = @[indexPath];
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self saveChecklistItems];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -157,6 +197,7 @@
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     
     [self configureTextForCell:cell withChecklistItem:item];
+    [self saveChecklistItems];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
