@@ -7,6 +7,8 @@
 //
 
 #import "ChecklistsViewController.h"
+#import "ChecklistItem.h"
+#import "Checklist.h"
 
 @interface ChecklistsViewController ()
 
@@ -44,6 +46,8 @@
 
     NSLog(@"direcory is: %@", [self documentsDirectory]);
     NSLog(@"file path is: %@", [self dataFilePath]);
+    
+    self.title = self.checklist.name;
     
     // Do any additional setup after loading the view, typically from a nib.
 //    _items = [[NSMutableArray alloc]initWithCapacity:20];

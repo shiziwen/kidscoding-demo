@@ -16,6 +16,7 @@
 		04427D0B1C23FC060025D7D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04427D091C23FC060025D7D1 /* Main.storyboard */; };
 		04427D0D1C23FC060025D7D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04427D0C1C23FC060025D7D1 /* Assets.xcassets */; };
 		04427D101C23FC060025D7D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04427D0E1C23FC060025D7D1 /* LaunchScreen.storyboard */; };
+		047930E31C32888C00DC72D0 /* ListDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047930E21C32888C00DC72D0 /* ListDetailViewController.m */; };
 		047D90531C26CA8D008EAB4F /* ItemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D90521C26CA8D008EAB4F /* ItemDetailViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,8 @@
 		04427D0C1C23FC060025D7D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04427D0F1C23FC060025D7D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04427D111C23FC060025D7D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		047930E11C32888C00DC72D0 /* ListDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListDetailViewController.h; sourceTree = "<group>"; };
+		047930E21C32888C00DC72D0 /* ListDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListDetailViewController.m; sourceTree = "<group>"; };
 		047D90511C26CA8D008EAB4F /* ItemDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemDetailViewController.h; sourceTree = "<group>"; };
 		047D90521C26CA8D008EAB4F /* ItemDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,19 +75,21 @@
 			children = (
 				04427D031C23FC060025D7D1 /* AppDelegate.h */,
 				04427D041C23FC060025D7D1 /* AppDelegate.m */,
+				04272C4E1C312DB700A107C8 /* AllListsViewController.h */,
+				04272C4F1C312DB700A107C8 /* AllListsViewController.m */,
 				04427D061C23FC060025D7D1 /* ChecklistsViewController.h */,
 				04427D071C23FC060025D7D1 /* ChecklistsViewController.m */,
 				04427D091C23FC060025D7D1 /* Main.storyboard */,
 				047D90511C26CA8D008EAB4F /* ItemDetailViewController.h */,
 				047D90521C26CA8D008EAB4F /* ItemDetailViewController.m */,
+				047930E11C32888C00DC72D0 /* ListDetailViewController.h */,
+				047930E21C32888C00DC72D0 /* ListDetailViewController.m */,
 				04427D0C1C23FC060025D7D1 /* Assets.xcassets */,
 				04427D0E1C23FC060025D7D1 /* LaunchScreen.storyboard */,
 				04427D111C23FC060025D7D1 /* Info.plist */,
 				04427D001C23FC060025D7D1 /* Supporting Files */,
 				0418D1331C2581020036C70B /* ChecklistItem.h */,
 				0418D1341C2581020036C70B /* ChecklistItem.m */,
-				04272C4E1C312DB700A107C8 /* AllListsViewController.h */,
-				04272C4F1C312DB700A107C8 /* AllListsViewController.m */,
 				04272C531C3133C400A107C8 /* Checklist.h */,
 				04272C541C3133C400A107C8 /* Checklist.m */,
 			);
@@ -172,6 +177,7 @@
 				04427D081C23FC060025D7D1 /* ChecklistsViewController.m in Sources */,
 				04427D051C23FC060025D7D1 /* AppDelegate.m in Sources */,
 				04272C501C312DB700A107C8 /* AllListsViewController.m in Sources */,
+				047930E31C32888C00DC72D0 /* ListDetailViewController.m in Sources */,
 				04427D021C23FC060025D7D1 /* main.m in Sources */,
 				047D90531C26CA8D008EAB4F /* ItemDetailViewController.m in Sources */,
 				0418D1351C2581020036C70B /* ChecklistItem.m in Sources */,

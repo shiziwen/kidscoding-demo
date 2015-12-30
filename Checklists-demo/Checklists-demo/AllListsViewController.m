@@ -8,15 +8,16 @@
 
 #import "AllListsViewController.h"
 #import "Checklist.h"
+#import "ChecklistsViewController.h"
 
 @interface AllListsViewController ()
 
 @end
 
 @implementation AllListsViewController
-
-NSMutableArray *_lists;
-
+{
+    NSMutableArray *_lists;
+}
 
 // 从storyboard中加载视图控制器
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -60,9 +61,6 @@ NSMutableArray *_lists;
 }
 
 #pragma mark - Table view data source
-
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_lists count];
 }
@@ -75,69 +73,76 @@ NSMutableArray *_lists;
     }
     Checklist *checklist = _lists[indexPath.row];
     cell.textLabel.text = checklist.name;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     
     return cell;
 }
 
 // show checklist
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"ShowChecklist" sender:nil];
+    Checklist *checklist = _lists[indexPath.row];
+    [self performSegueWithIdentifier:@"ShowChecklist" sender:checklist];
 }
 
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+// 将checklist对象传递给ChecklistViewController
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"ShowChecklist"]) {
+        ChecklistsViewController *controller = segue.destinationViewController;
+        controller.checklist = sender;
+    } else if ([segue.identifier isEqualToString:@"AddChecklist"]) {
+        UINavigationController *navigationController = segue.destinationViewController;
+        ListDetailViewController *controller = (ListDetailViewController *)navigationController.topViewController;
+        controller.delegate = self;
+        controller.checklistToEdit = nil;
+    }
+    
 }
-*/
 
+// 代理实现
+- (void)listDetailViewControllerDidCancel:(ListDetailViewController *)controller {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)listDetailViewController:(ListDetailViewController *)controller
+        didFinishAddingChecklist:(Checklist *)checklist {
+    NSInteger newRowIndex = [_lists count];
+    [_lists addObject:checklist];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
+    NSArray *indexPaths = @[indexPath];
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+- (void)listDetailViewController:(ListDetailViewController *)controller
+       didFinishEditingChecklist:(Checklist *)checklist {
+    NSInteger index = [_lists indexOfObject:checklist];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.textLabel.text = checklist.name;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+// delete
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [_lists removeObjectAtIndex:indexPath.row];
+    NSArray *indexPaths = @[indexPath];
+    [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+// 打开编辑界面
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"accessoryButtonTappedForRowWithIndexPath");
+    
+    UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"ListNavigationController"];
+    
+    ListDetailViewController *controller = (ListDetailViewController *)navigationController.topViewController;
+    controller.delegate = self;
+    
+    Checklist *checklist = _lists[indexPath.row];
+    controller.checklistToEdit = checklist;
+
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
 @end
