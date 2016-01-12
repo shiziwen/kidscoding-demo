@@ -13,9 +13,15 @@
 - (id)init {
     if (self = [super init]) {
         [self loadChecklists];
+        [self registerDefaults];
     }
     
     return self;
+}
+
+- (void)registerDefaults {
+    NSDictionary *dictionary = @{@"ChecklistIndex": @-1};
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
 - (NSString *)documentsDirectory {
@@ -53,5 +59,11 @@
     }
 }
 
+- (NSInteger)indexOfSelectedChecklist {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"ChecklistIndex"];
+}
 
+- (void)setIndexOfSelectedChecklist:(NSInteger)index {
+    [[NSUserDefaults standardUserDefaults] setInteger:index forKey:@"ChecklistIndex"];
+}
 @end

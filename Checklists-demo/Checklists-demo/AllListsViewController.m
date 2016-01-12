@@ -57,6 +57,8 @@
 
 // show checklist
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.dataModel setIndexOfSelectedChecklist:indexPath.row];
+    
     Checklist *checklist = self.dataModel.lists[indexPath.row];
     [self performSegueWithIdentifier:@"ShowChecklist" sender:checklist];
 }
@@ -82,15 +84,12 @@
 
 - (void)listDetailViewController:(ListDetailViewController *)controller
         didFinishAddingChecklist:(Checklist *)checklist {
-    NSLog(@"add data");
     
     NSInteger newRowIndex = [self.dataModel.lists count];
     [self.dataModel.lists addObject:checklist];
-    NSLog(@"add data-1");
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
     NSArray *indexPaths = @[indexPath];
-    NSLog(@"add data-2");
     
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -126,5 +125,28 @@
     controller.checklistToEdit = checklist;
 
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+// 每当导航控制器让应用切换到一个新的界面时都会调用该方法
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    // 如果用户触碰了back按钮，那么新的视图控制器就是AllListsViewController自身
+    if (viewController == self) {
+        [self.dataModel setIndexOfSelectedChecklist:-1];
+    }
+}
+
+// 当视图控制器开始呈现出界面的时候就会调用该方法
+/*
+ viewDidAppear并且当应用启动的时候会调用,而是每次当导航控制器切换回主界面的时候都会调
+ 当用户触碰back按钮的时候,导航控制器会在调用viewDidAppear方法前调用willShowViewController方法
+ */
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.navigationController.delegate = self;
+    NSInteger index = self.dataModel.indexOfSelectedChecklist;
+    if (index >= 0 && index < [self.dataModel.lists count]) {
+        Checklist *checklist = self.dataModel.lists[index];
+        [self performSegueWithIdentifier:@"ShowChecklist" sender:checklist];
+    }
 }
 @end
