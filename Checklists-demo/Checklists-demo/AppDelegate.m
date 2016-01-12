@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AllListsViewController.h"
 
 @interface AppDelegate ()
 
@@ -25,9 +26,16 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
+- (void)saveData {
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    AllListsViewController *controller = navigationController.viewControllers[0];
+    [controller saveChecklists];
+}
+
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [self saveData];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -40,6 +48,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self saveData];
 }
 
 @end

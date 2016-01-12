@@ -64,6 +64,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSLog(@"file is %@", [self dataFilePath]);
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
