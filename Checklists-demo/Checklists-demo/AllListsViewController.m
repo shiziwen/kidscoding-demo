@@ -46,11 +46,20 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     Checklist *checklist = self.dataModel.lists[indexPath.row];
     cell.textLabel.text = checklist.name;
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    
+    int count = [checklist countUncheckedItems];
+    if ([checklist.items count] == 0) {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"(No Items)"];
+    } else if (count == 0) {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"All Done"];
+    } else {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d Remaining", [checklist countUncheckedItems]];
+    }
     
     return cell;
 }
@@ -148,5 +157,10 @@
         Checklist *checklist = self.dataModel.lists[index];
         [self performSegueWithIdentifier:@"ShowChecklist" sender:checklist];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 @end
