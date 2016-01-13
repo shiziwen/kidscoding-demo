@@ -9,16 +9,17 @@
 #import "ListDetailViewController.h"
 #import "Checklist.h"
 
-@implementation ListDetailViewController
+@implementation ListDetailViewController {
+    NSString *_iconName;
+}
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super initWithCoder:aDecoder])) {
+        _iconName = @"Folder";
     }
     return self;
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,7 +28,9 @@
         self.title = @"Edit Checklist";
         self.textField.text = self.checklistToEdit.name;
         self.doneBarButton.enabled = YES;
+        _iconName = self.checklistToEdit.iconName;
     }
+    self.iconImageView.image = [UIImage imageNamed:_iconName];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -43,15 +46,23 @@
     if (self.checklistToEdit == nil) {
         Checklist *checklist = [[Checklist alloc]init];
         checklist.name = self.textField.text;
+        checklist.iconName = _iconName;
+        
         [self.delegate listDetailViewController:self didFinishAddingChecklist:checklist];
     } else {
         self.checklistToEdit.name = self.textField.text;
+        self.checklistToEdit.iconName = _iconName;
+        
         [self.delegate listDetailViewController:self didFinishEditingChecklist:self.checklistToEdit];
     }
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+    if (indexPath.section == 1) {
+        return indexPath;
+    } else {
+        return nil;
+    }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(nonnull NSString *)string {
@@ -60,4 +71,19 @@
     return YES;
 }
 
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // 通知IconPickerViewController该界面将成为它的代理对象
+    if ([segue.identifier isEqualToString:@"PickIcon"]) {
+        IconPickerViewController *controller = segue.destinationViewController;
+        controller.delegate = self;
+    }
+}
+
+// 实现代理协议的回调方法
+- (void)iconPicker:(IconPickerViewController *)picker didPickIcon:(NSString *)iconName {
+    _iconName = iconName;
+    self.iconImageView.image = [UIImage imageNamed:_iconName];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end
