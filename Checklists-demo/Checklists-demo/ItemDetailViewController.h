@@ -24,6 +24,10 @@
 - (IBAction)done:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneBarButton;
+@property (weak, nonatomic) IBOutlet UISwitch *switchControl;
+
+@property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;
+
 
 @property(weak, nonatomic) id <ItemDetailViewControllerDelegate> delegate;
 

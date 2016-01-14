@@ -120,6 +120,9 @@
     } else {
         label.text = @"";
     }
+    
+    // change tiny color
+    label.textColor = self.view.tintColor;
 }
 
 // 配置checkitem的text
