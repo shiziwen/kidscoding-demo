@@ -40,4 +40,46 @@
     [aCoder encodeBool:self.shouldRemind forKey:@"ShouldRemind"];
     [aCoder encodeInteger:self.itemId forKey:@"ItemID"];
 }
+
+- (void)scheduleNotification {
+    UILocalNotification *exisitingNotification = [self notificationForThisItem];
+    if (exisitingNotification != nil) {
+        NSLog(@"Found exist notification %@", exisitingNotification);
+        [[UIApplication sharedApplication] cancelLocalNotification:exisitingNotification];
+    }
+    
+    if (self.shouldRemind && [self.dueDate compare:[NSDate date]] != NSOrderedAscending) {
+//        NSLog(@"added one notification");
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.fireDate = self.dueDate;
+        localNotification.timeZone = [NSTimeZone defaultTimeZone];
+        localNotification.alertBody = self.text;
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        localNotification.userInfo = @{@"ItemID": @(self.itemId)};
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+        
+        NSLog(@"schedule notification %@ for itemId %ld", localNotification, self.itemId);
+    }
+}
+
+- (UILocalNotification *)notificationForThisItem {
+    NSArray *allNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for (UILocalNotification *notification in allNotifications) {
+        NSNumber *number = [notification.userInfo objectForKey:@"ItemID"];
+        if (number != nil && [number integerValue] == self.itemId) {
+            return notification;
+        }
+    }
+    return nil;
+}
+
+- (void)dealloc {
+    UILocalNotification *exisitingNotification = [self notificationForThisItem];
+    if (exisitingNotification != nil) {
+        NSLog(@"remove existing notification %@", exisitingNotification);
+        [[UIApplication sharedApplication] cancelLocalNotification:exisitingNotification];
+    }
+}
+
 @end

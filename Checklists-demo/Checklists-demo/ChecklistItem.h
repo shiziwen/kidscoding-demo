@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface ChecklistItem : NSObject
 
@@ -17,5 +18,7 @@
 @property (nonatomic, assign) NSInteger itemId;
 
 - (void) toggleChecked;
+
+- (void)scheduleNotification;
 
 @end
