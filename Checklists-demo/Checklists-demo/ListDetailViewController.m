@@ -13,6 +13,15 @@
     NSString *_iconName;
 }
 
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         _iconName = @"Folder";
@@ -30,7 +39,9 @@
         self.doneBarButton.enabled = YES;
         _iconName = self.checklistToEdit.iconName;
     }
+    NSLog(@"icon is %@", _iconName);
     self.iconImageView.image = [UIImage imageNamed:_iconName];
+//    self.iconImageView.hidden = FALSE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

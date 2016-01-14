@@ -28,7 +28,26 @@
     AllListsViewController *controller = navigationController.viewControllers[0];
     controller.dataModel = _dataModel;
     
+    //register local notifications
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }
+    
+    // local notification
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:10];
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = date;
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    localNotification.alertBody = @"Hello World!";
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
+    
     return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSLog(@"did receive localnotification: %@", notification);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -44,6 +63,7 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [self saveData];
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

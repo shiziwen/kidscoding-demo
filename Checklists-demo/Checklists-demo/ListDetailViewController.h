@@ -31,6 +31,8 @@
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)done:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+
 
 @end

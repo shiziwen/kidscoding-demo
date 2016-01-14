@@ -26,11 +26,11 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     _icons = @[
             @"No Icon",
+            @"Folder",
             @"Appointments",
             @"Birthdays",
             @"Chores",
             @"Drinks",
-            @"Folder",
             @"Groceries",
             @"Inbox",
             @"Photos",

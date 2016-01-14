@@ -243,8 +243,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="enc-ri-sCu">
-                                                    <rect key="frame" x="523" y="4" width="36" height="36"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mpI-mV-raf">
+                                                    <rect key="frame" x="290" y="4" width="36" height="36"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -274,7 +274,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneBarButton" destination="9Od-Dg-bR4" id="PJs-ea-y32"/>
-                        <outlet property="iconImageView" destination="enc-ri-sCu" id="Ksn-OS-RcM"/>
+                        <outlet property="iconImageView" destination="mpI-mV-raf" id="ia6-Mq-SZp"/>
                         <outlet property="textField" destination="Ape-m6-w0i" id="r7e-yk-GMK"/>
                     </connections>
                 </tableViewController>
