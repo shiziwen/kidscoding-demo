@@ -12,7 +12,16 @@
 
 @end
 
-@implementation CurrentLocationViewController
+@implementation CurrentLocationViewController {
+    CLLocationManager *_locationManager;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super initWithCoder:aDecoder])) {
+        _locationManager = [[CLLocationManager alloc] init];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,7 +34,22 @@
 }
 
 - (IBAction)getLocation:(id)sender {
+    NSLog(@"touch getLocation");
     
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+    [_locationManager requestWhenInUseAuthorization];
+//    [_locationManager requestAlwaysAuthorization];
+    [_locationManager startUpdatingLocation];
 }
 
+# pragma mark CLLocationManagerDelegate
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    NSLog(@"get location error: %@", error);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    CLLocation *newLocation = [locations lastObject];
+    NSLog(@"new Points: %@", newLocation);
+}
 @end
