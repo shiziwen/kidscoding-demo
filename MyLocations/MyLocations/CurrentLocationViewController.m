@@ -70,10 +70,13 @@
     [_locationManager startUpdatingLocation];
     
     _updatingLocation = YES;
+    
+    [self performSelector:@selector(didTimeOut:) withObject:nil afterDelay:10];
 }
 
 - (void)stopLocationManager {
     if (_updatingLocation) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(didTimeOut:) object:nil];
         [_locationManager stopUpdatingLocation];
         _locationManager.delegate = nil;
         _updatingLocation = NO;
@@ -108,6 +111,11 @@
         return;
     }
     
+    CLLocationDistance distance = MAXFLOAT;
+    if (_location != nil) {
+        distance = [newLocation distanceFromLocation:_location];
+    }
+    
     if (_location == nil || _location.horizontalAccuracy > newLocation.horizontalAccuracy) {
         _lastLocationError = nil;
         _location = newLocation;
@@ -118,28 +126,41 @@
             [self stopLocationManager];
             [self configureGetButton];
         }
-    }
-    
-    if (!_performingReverseGeocoding) {
-        NSLog(@"*** Going to geocode");
-        _performingReverseGeocoding = YES;
         
-        // show searching status
-        self.addressLabel.text = @"Searching...";
-        
-        [_geoCoder reverseGeocodeLocation:_location completionHandler:^(NSArray *placemarks, NSError *error) {
-            NSLog(@"*** Found placemarks: %@, error: %@", placemarks, error);
-            _lastGeocodingError = error;
-            
-            if (error == nil && [placemarks count] > 0) {
-                _placemark = [placemarks lastObject];
-            } else {
-                placemarks = nil;
-            }
-            
+        if (distance > 0) {
             _performingReverseGeocoding = NO;
+        }
+        
+        if (!_performingReverseGeocoding) {
+            NSLog(@"*** Going to geocode");
+            _performingReverseGeocoding = YES;
+            
+            // show searching status
+            self.addressLabel.text = @"Searching...";
+            
+            [_geoCoder reverseGeocodeLocation:_location completionHandler:^(NSArray *placemarks, NSError *error) {
+                NSLog(@"*** Found placemarks: %@, error: %@", placemarks, error);
+                _lastGeocodingError = error;
+                
+                if (error == nil && [placemarks count] > 0) {
+                    _placemark = [placemarks lastObject];
+                } else {
+                    placemarks = nil;
+                }
+                
+                _performingReverseGeocoding = NO;
+                [self updateLabels];
+            }];
+        }
+        
+    } else if (distance < 1.0) {
+        NSTimeInterval timeInterval = [newLocation.timestamp timeIntervalSinceDate:_location.timestamp];
+        if (timeInterval > 10) {
+            NSLog(@"Force stop");
+            [self stopLocationManager];
             [self updateLabels];
-        }];
+            [self configureGetButton];
+        }
     }
 }
 
@@ -169,7 +190,7 @@
             placeMessage = @"found none";
         }
         self.addressLabel.text = placeMessage;
-        NSLog(@"placeMessage is %@, _performingReverseGeocoding is %@", placeMessage, _performingReverseGeocoding);
+        NSLog(@"placeMessage is %@, _performingReverseGeocoding is %d", placeMessage, _performingReverseGeocoding);
         
     } else {
         self.latitudeLabel.text = @"";
@@ -206,5 +227,15 @@
     }
 }
 
+- (void)didTimeOut:(id)obj {
+    NSLog(@"*** Timeout!");
+    
+    if (_location == nil) {
+        [self stopLocationManager];
+        _lastLocationError = [NSError errorWithDomain:@"MyLocationsErrorDomain" code:1 userInfo:nil];
+        [self updateLabels];
+        [self configureGetButton];
+    }
+}
 
 @end
