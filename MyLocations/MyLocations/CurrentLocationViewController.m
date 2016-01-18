@@ -17,11 +17,17 @@
     CLLocation *_location;
     BOOL _updatingLocation;
     NSError *_lastLocationError;
+    
+    CLGeocoder *_geoCoder;
+    CLPlacemark *_placemark;
+    BOOL _performingReverseGeocoding;
+    NSError *_lastGeocodingError;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         _locationManager = [[CLLocationManager alloc] init];
+        _geoCoder = [[CLGeocoder alloc] init];
     }
     return self;
 }
@@ -46,6 +52,10 @@
     } else {
         _location = nil;
         _lastLocationError = nil;
+        
+        _placemark = nil;
+        _lastGeocodingError = nil;
+        
         [self startLocaionManager];
     }
     [self updateLabels];
@@ -109,15 +119,58 @@
             [self configureGetButton];
         }
     }
+    
+    if (!_performingReverseGeocoding) {
+        NSLog(@"*** Going to geocode");
+        _performingReverseGeocoding = YES;
+        
+        // show searching status
+        self.addressLabel.text = @"Searching...";
+        
+        [_geoCoder reverseGeocodeLocation:_location completionHandler:^(NSArray *placemarks, NSError *error) {
+            NSLog(@"*** Found placemarks: %@, error: %@", placemarks, error);
+            _lastGeocodingError = error;
+            
+            if (error == nil && [placemarks count] > 0) {
+                _placemark = [placemarks lastObject];
+            } else {
+                placemarks = nil;
+            }
+            
+            _performingReverseGeocoding = NO;
+            [self updateLabels];
+        }];
+    }
+}
+
+- (NSString *)stringFromPlacemark:(CLPlacemark *)thePlacemark {
+    return [NSString stringWithFormat:@"%@ %@\n %@ %@ %@",
+            thePlacemark.subThoroughfare, thePlacemark.thoroughfare,
+            thePlacemark.locality, thePlacemark.administrativeArea, thePlacemark.postalCode
+            ];
 }
 
 - (void)updateLabels {
-    NSLog(@"updates");
+    NSLog(@"update label");
     if (_location != nil) {
         self.latitudeLabel.text = [NSString stringWithFormat:@"%.8f", _location.coordinate.latitude];
         self.longitudeLabel.text = [NSString stringWithFormat:@"%.8f", _location.coordinate.latitude];
         self.tagButton.hidden = NO;
         self.messageLabel.text = @"";
+        
+        NSString *placeMessage;
+        if (_placemark != nil) {
+            placeMessage = [self stringFromPlacemark:_placemark];
+        } else if (_performingReverseGeocoding) {
+            placeMessage = @"Searching...";
+        } else if (_lastGeocodingError != nil) {
+            placeMessage = @"Error";
+        } else {
+            placeMessage = @"found none";
+        }
+        self.addressLabel.text = placeMessage;
+        NSLog(@"placeMessage is %@, _performingReverseGeocoding is %@", placeMessage, _performingReverseGeocoding);
+        
     } else {
         self.latitudeLabel.text = @"";
         self.longitudeLabel.text = @"";
@@ -138,6 +191,8 @@
             statusMessage = @"Sorry, user has denied the location service";
         } else if (_updatingLocation) {
             statusMessage = @"Searching location...";
+        } else {
+            statusMessage = @"Touch button to location";
         }
         self.messageLabel.text = statusMessage;
     }
