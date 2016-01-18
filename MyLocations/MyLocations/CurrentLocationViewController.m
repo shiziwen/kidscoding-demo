@@ -30,6 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [self updateLabels];
+    [self configureGetButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,8 +41,15 @@
 - (IBAction)getLocation:(id)sender {
     NSLog(@"touch getLocation");
     
-    [self startLocaionManager];
+    if (_updatingLocation) {
+        [self stopLocationManager];
+    } else {
+        _location = nil;
+        _lastLocationError = nil;
+        [self startLocaionManager];
+    }
     [self updateLabels];
+    [self configureGetButton];
 }
 
 - (void)startLocaionManager {
@@ -72,18 +80,35 @@
     
     [self stopLocationManager];
     _lastLocationError = error;
-    _location = nil;
+//    _location = nil;
     
     [self updateLabels];
+    [self configureGetButton];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     CLLocation *newLocation = [locations lastObject];
     NSLog(@"new Points: %@", newLocation);
     
-    _lastLocationError = nil;
-    _location = newLocation;
-    [self updateLabels];
+    if ([newLocation.timestamp timeIntervalSinceNow] < -5.0) {
+        return;
+    }
+    
+    if (newLocation.horizontalAccuracy < 0) {
+        return;
+    }
+    
+    if (_location == nil || _location.horizontalAccuracy > newLocation.horizontalAccuracy) {
+        _lastLocationError = nil;
+        _location = newLocation;
+        [self updateLabels];
+        
+        if (newLocation.horizontalAccuracy <= _location.horizontalAccuracy) {
+            NSLog(@"Success get location");
+            [self stopLocationManager];
+            [self configureGetButton];
+        }
+    }
 }
 
 - (void)updateLabels {
@@ -116,8 +141,14 @@
         }
         self.messageLabel.text = statusMessage;
     }
-    
-    
+}
+
+- (void)configureGetButton {
+    if (_updatingLocation) {
+        [self.getButton setTitle:@"Stop get location" forState:UIControlStateNormal];
+    } else {
+        [self.getButton setTitle:@"Get current locaton" forState:UIControlStateNormal];
+    }
 }
 
 
