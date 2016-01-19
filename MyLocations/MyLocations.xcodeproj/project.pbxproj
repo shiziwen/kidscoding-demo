@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041521BA1C4E8A49008A3511 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 041521B91C4E8A49008A3511 /* CoreData.framework */; };
+		041521BD1C4E8B82008A3511 /* HudView.m in Sources */ = {isa = PBXBuildFile; fileRef = 041521BC1C4E8B82008A3511 /* HudView.m */; };
 		046CA7951C4A9C5400CA5E54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CA7941C4A9C5400CA5E54 /* main.m */; };
 		046CA7981C4A9C5400CA5E54 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CA7971C4A9C5400CA5E54 /* AppDelegate.m */; };
 		046CA79B1C4A9C5400CA5E54 /* CurrentLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CA79A1C4A9C5400CA5E54 /* CurrentLocationViewController.m */; };
@@ -20,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		041521B91C4E8A49008A3511 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		041521BB1C4E8B82008A3511 /* HudView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HudView.h; sourceTree = "<group>"; };
+		041521BC1C4E8B82008A3511 /* HudView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HudView.m; sourceTree = "<group>"; };
 		046CA7901C4A9C5400CA5E54 /* MyLocations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLocations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		046CA7941C4A9C5400CA5E54 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		046CA7961C4A9C5400CA5E54 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -44,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				041521BA1C4E8A49008A3511 /* CoreData.framework in Frameworks */,
 				046CA7AE1C4AA66E00CA5E54 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,6 +60,7 @@
 		046CA7871C4A9C5400CA5E54 = {
 			isa = PBXGroup;
 			children = (
+				041521B91C4E8A49008A3511 /* CoreData.framework */,
 				046CA7AD1C4AA66E00CA5E54 /* CoreLocation.framework */,
 				046CA7921C4A9C5400CA5E54 /* MyLocations */,
 				046CA7911C4A9C5400CA5E54 /* Products */,
@@ -86,6 +93,8 @@
 				046CA7A41C4A9C5400CA5E54 /* LaunchScreen.storyboard */,
 				046CA7A71C4A9C5400CA5E54 /* Info.plist */,
 				046CA7931C4A9C5400CA5E54 /* Supporting Files */,
+				041521BB1C4E8B82008A3511 /* HudView.h */,
+				041521BC1C4E8B82008A3511 /* HudView.m */,
 			);
 			path = MyLocations;
 			sourceTree = "<group>";
@@ -172,6 +181,7 @@
 				046CA79E1C4A9C5400CA5E54 /* SecondViewController.m in Sources */,
 				046CA7981C4A9C5400CA5E54 /* AppDelegate.m in Sources */,
 				046CA79B1C4A9C5400CA5E54 /* CurrentLocationViewController.m in Sources */,
+				041521BD1C4E8B82008A3511 /* HudView.m in Sources */,
 				048818B81C4E52B4003D9C64 /* CategoryPickerViewController.m in Sources */,
 				046CA7951C4A9C5400CA5E54 /* main.m in Sources */,
 			);
