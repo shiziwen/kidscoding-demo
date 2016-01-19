@@ -8,7 +8,7 @@
 
 #import "LocationDetailViewController.h"
 
-@interface LocationDetailViewController ()
+@interface LocationDetailViewController () <UITextViewDelegate>
 @property (nonatomic, weak) IBOutlet UITextView *descriptionTextView;
 @property (nonatomic, weak) IBOutlet UILabel *categoryLabel;
 @property (nonatomic, weak) IBOutlet UILabel *latitudeLabel;
@@ -18,8 +18,21 @@
 
 @end
 
-@implementation LocationDetailViewController
+@implementation LocationDetailViewController {
+    NSString *_descriptionText;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super initWithCoder:aDecoder])) {
+        _descriptionText = @"";
+    }
+    
+    return self;
+}
+
 - (IBAction)done:(id)sender {
+    NSLog(@"description is %@", _descriptionText);
+    
     [self closeScreen];
 }
 
@@ -39,6 +52,19 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.descriptionTextView.text = _descriptionText;
+    self.categoryLabel.text = @"";
+    
+    self.latitudeLabel.text = [NSString stringWithFormat:@"%.8f", self.coordinate.latitude];
+    self.longitudeLabel.text = [NSString stringWithFormat:@"%.8f", self.coordinate.longitude];
+    
+    if (self.placemark != nil) {
+        self.addessLabel.text = [self stringFromPlacemark:self.placemark];
+    } else {
+        self.addessLabel.text = @"No Address Found";
+    }
+    
+    self.dateLabel.text = [self formateDate:[NSDate date]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,8 +72,27 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+- (NSString *)stringFromPlacemark:(CLPlacemark *)placemark {
+    return [NSString stringWithFormat:@"%@ %@\n %@ %@ %@",
+            placemark.subThoroughfare, placemark.thoroughfare,
+            placemark.locality, placemark.administrativeArea, placemark.postalCode
+            ];
+}
 
+- (NSString *)formateDate:(NSDate *)theDate {
+    static NSDateFormatter *formatter = nil;
+    
+    if (formatter == nil) {
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setTimeStyle:NSDateFormatterShortStyle];
+    }
+    
+    return [formatter stringFromDate:theDate];
+}
+
+#pragma mark - Table view data source
+/*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #warning Incomplete implementation, return the number of sections
     return 0;
@@ -58,7 +103,7 @@
     return 0;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
@@ -109,7 +154,37 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
 }
 */
 
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        return 88;
+    } else if (indexPath.section == 2 && indexPath.row == 0) {
+        CGRect rect = CGRectMake(100, 10, 205, 10000);
+        self.addessLabel.frame = rect;
+        [self.addessLabel sizeToFit];
+        
+        rect.size.height = self.addessLabel.frame.size.height;
+        self.addessLabel.frame = rect;
+        
+        return self.addessLabel.frame.size.height + 20;
+    } else {
+        return 44;
+    }
+}
+
+# pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    _descriptionText = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    _descriptionText = textView.text;
+}
 @end
