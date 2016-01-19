@@ -68,6 +68,7 @@
     NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirecoty = [path lastObject];
     
+    NSLog(@"document directory is %@", documentsDirecoty);
     return documentsDirecoty;
 }
 
@@ -99,6 +100,7 @@
         }
     }
     
+    NSLog(@"context is %@", _managedObjectContext);
     return _managedObjectContext;
 }
 @end

@@ -60,7 +60,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Tag Location"/>
                                 <connections>
-                                    <segue destination="vAx-5g-nUc" kind="modal" id="dz0-YH-WTr"/>
+                                    <segue destination="vAx-5g-nUc" kind="modal" identifier="TagLocation" id="dz0-YH-WTr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PDi-V6-Hhr">
@@ -288,9 +288,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addessLabel" destination="1OC-22-u8V" id="SVN-2p-32s"/>
+                        <outlet property="addessLabel" destination="xeQ-hc-dRw" id="DEf-g0-AvQ"/>
                         <outlet property="categoryLabel" destination="OFz-Ev-CaD" id="QmJ-Cb-bBm"/>
-                        <outlet property="dateLabel" destination="xeQ-hc-dRw" id="Qhk-jB-bHk"/>
+                        <outlet property="dateLabel" destination="1OC-22-u8V" id="Gr5-vv-hMk"/>
                         <outlet property="descriptionTextView" destination="ZNk-Wr-BwR" id="3i1-9n-6aZ"/>
                         <outlet property="latitudeLabel" destination="Ego-hE-pM1" id="T3B-zL-I5x"/>
                         <outlet property="longitudeLabel" destination="Qge-wS-fxR" id="Q0R-d0-lcI"/>

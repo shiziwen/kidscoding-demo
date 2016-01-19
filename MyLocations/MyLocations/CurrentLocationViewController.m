@@ -240,6 +240,7 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"cur prepareForSegue , identifier is %@", segue.identifier);
     if ([segue.identifier isEqualToString:@"TagLocation"]) {
         UINavigationController *navigationController = segue.destinationViewController;
         LocationDetailViewController *controller = (LocationDetailViewController *)navigationController.topViewController;
@@ -248,6 +249,9 @@
         controller.placemark = _placemark;
         
         controller.managedObjectContext = self.managedObjectContext;
+        
+        NSLog(@"prepareForSegue in current, managedObjectContext is %@, coordinate is %@",
+              self.managedObjectContext, _location.coordinate);
     }
 }
 

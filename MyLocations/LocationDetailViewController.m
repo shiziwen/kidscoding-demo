@@ -9,6 +9,7 @@
 #import "LocationDetailViewController.h"
 #import "CategoryPickerViewController.h"
 #import "HudView.h"
+#import "Location.h"
 
 @interface LocationDetailViewController () <UITextViewDelegate>
 @property (nonatomic, weak) IBOutlet UITextView *descriptionTextView;
@@ -23,12 +24,14 @@
 @implementation LocationDetailViewController {
     NSString *_descriptionText;
     NSString *_categoryName;
+    NSDate *_date;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         _descriptionText = @"";
         _categoryName = @"No Category";
+        _date = [NSDate date];
     }
     
     return self;
@@ -37,10 +40,23 @@
 - (IBAction)done:(id)sender {
     NSLog(@"description is %@", _descriptionText);
     
-//    [self closeScreen];
-    
     HudView *hudView = [HudView hudInView:self.navigationController.view animated:YES];
     hudView.text = @"Tagged";
+    
+    Location *location = [NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:self.managedObjectContext];
+    location.locationDescription = _descriptionText;
+    location.category = _categoryName;
+    location.latitude = @(self.coordinate.latitude);
+    location.longitude = @(self.coordinate.longitude);
+    location.date = _date;
+    location.placemark = _placemark;
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
     [self performSelector:@selector(closeScreen) withObject:nil afterDelay:0.6];
 }
 
@@ -79,7 +95,7 @@
         self.addessLabel.text = @"No Address Found";
     }
     
-    self.dateLabel.text = [self formateDate:[NSDate date]];
+    self.dateLabel.text = [self formateDate:_date];
     
     // 添加触碰操作处理
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
