@@ -6,9 +6,16 @@
 //  Copyright © 2016年 shiziwen. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
+
 #import "AppDelegate.h"
+#import "CurrentLocationViewController.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSManagedObjectModel *manageObjectModel;
+@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @end
 
@@ -17,6 +24,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    CurrentLocationViewController *currentLocationViewController = (CurrentLocationViewController *)tabBarController.viewControllers[0];
+    currentLocationViewController.managedObjectContext = self.managedObjectContext;
+    
     return YES;
 }
 
@@ -42,4 +53,52 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+# pragma mark - Core Data
+- (NSManagedObjectModel *)manageObjectModel {
+    if (_manageObjectModel == nil) {
+        NSString *modelPath = [[NSBundle mainBundle]pathForResource:@"DataModel" ofType:@"momd"];
+        NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
+        _manageObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    }
+    
+    return _manageObjectModel;
+}
+
+- (NSString *)documentsDirectory {
+    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirecoty = [path lastObject];
+    
+    return documentsDirecoty;
+}
+
+- (NSString *)dataStorePath {
+    return [[self documentsDirectory] stringByAppendingPathComponent:@"DataStore.sql"];
+    
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    if (_persistentStoreCoordinator == nil) {
+        NSURL *storeURL = [NSURL fileURLWithPath:[self dataStorePath]];
+        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.manageObjectModel];
+        
+        NSError *error;
+        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+            NSLog(@"Error adding persistent store %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+    return _persistentStoreCoordinator;
+}
+
+- (NSManagedObjectContext *)managedObjectContext {
+    if (_managedObjectContext == nil) {
+        NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
+        if (coordinator != nil) {
+            _managedObjectContext = [[NSManagedObjectContext alloc] init];
+            [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+        }
+    }
+    
+    return _managedObjectContext;
+}
 @end

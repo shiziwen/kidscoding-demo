@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface CategoryPickerViewController : UITableViewController
+
 @property (nonatomic, strong) NSString *selectedCategoryName;
 
 @end

@@ -18,5 +18,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *getButton;
 
 - (IBAction)getLocation:(id)sender;
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @end
 
