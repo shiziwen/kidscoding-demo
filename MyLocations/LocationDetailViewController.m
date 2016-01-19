@@ -7,6 +7,7 @@
 //
 
 #import "LocationDetailViewController.h"
+#import "CategoryPickerViewController.h"
 
 @interface LocationDetailViewController () <UITextViewDelegate>
 @property (nonatomic, weak) IBOutlet UITextView *descriptionTextView;
@@ -20,11 +21,13 @@
 
 @implementation LocationDetailViewController {
     NSString *_descriptionText;
+    NSString *_categoryName;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         _descriptionText = @"";
+        _categoryName = @"No Category";
     }
     
     return self;
@@ -44,6 +47,13 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+// 代替代理实现保存categoryName
+- (IBAction)categoryPickerDidPickCategory:(UIStoryboardSegue *)segue {
+    CategoryPickerViewController *viewController = segue.sourceViewController;
+    _categoryName = viewController.selectedCategoryName;
+    self.categoryLabel.text = _categoryName;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -53,7 +63,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.descriptionTextView.text = _descriptionText;
-    self.categoryLabel.text = @"";
+    self.categoryLabel.text = _categoryName;
     
     self.latitudeLabel.text = [NSString stringWithFormat:@"%.8f", self.coordinate.latitude];
     self.longitudeLabel.text = [NSString stringWithFormat:@"%.8f", self.coordinate.longitude];
@@ -65,6 +75,11 @@
     }
     
     self.dateLabel.text = [self formateDate:[NSDate date]];
+    
+    // 添加触碰操作处理
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    [self.tableView addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -147,16 +162,19 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    
+    if ([segue.identifier isEqualToString:@"PickCategory"]) {
+        CategoryPickerViewController *controller = segue.destinationViewController;
+        controller.selectedCategoryName = _categoryName;
+    }
 }
-*/
+
 
 #pragma mark - UITableViewDelegate
 
@@ -177,6 +195,20 @@
     }
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 || indexPath.section == 1) {
+        return indexPath;
+    } else {
+        return nil;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        [self.descriptionTextView becomeFirstResponder];
+    }
+}
+
 # pragma mark - UITextViewDelegate
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -186,5 +218,15 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     _descriptionText = textView.text;
+}
+
+- (void)hideKeyboard:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint point = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+    if (indexPath != nil && indexPath.section == 0 && indexPath.row == 0) {
+        return;
+    }
+    
+    [self.descriptionTextView resignFirstResponder];
 }
 @end

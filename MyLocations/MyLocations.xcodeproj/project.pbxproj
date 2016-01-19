@@ -16,6 +16,7 @@
 		046CA7A61C4A9C5400CA5E54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046CA7A41C4A9C5400CA5E54 /* LaunchScreen.storyboard */; };
 		046CA7AE1C4AA66E00CA5E54 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CA7AD1C4AA66E00CA5E54 /* CoreLocation.framework */; };
 		048818B51C4DE406003D9C64 /* LocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048818B41C4DE406003D9C64 /* LocationDetailViewController.m */; };
+		048818B81C4E52B4003D9C64 /* CategoryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048818B71C4E52B4003D9C64 /* CategoryPickerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,8 @@
 		046CA7AD1C4AA66E00CA5E54 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		048818B31C4DE406003D9C64 /* LocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationDetailViewController.h; path = ../LocationDetailViewController.h; sourceTree = "<group>"; };
 		048818B41C4DE406003D9C64 /* LocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationDetailViewController.m; path = ../LocationDetailViewController.m; sourceTree = "<group>"; };
+		048818B61C4E52B4003D9C64 /* CategoryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPickerViewController.h; sourceTree = "<group>"; };
+		048818B71C4E52B4003D9C64 /* CategoryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPickerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +79,8 @@
 				046CA79D1C4A9C5400CA5E54 /* SecondViewController.m */,
 				048818B31C4DE406003D9C64 /* LocationDetailViewController.h */,
 				048818B41C4DE406003D9C64 /* LocationDetailViewController.m */,
+				048818B61C4E52B4003D9C64 /* CategoryPickerViewController.h */,
+				048818B71C4E52B4003D9C64 /* CategoryPickerViewController.m */,
 				046CA79F1C4A9C5400CA5E54 /* Main.storyboard */,
 				046CA7A21C4A9C5400CA5E54 /* Assets.xcassets */,
 				046CA7A41C4A9C5400CA5E54 /* LaunchScreen.storyboard */,
@@ -167,6 +172,7 @@
 				046CA79E1C4A9C5400CA5E54 /* SecondViewController.m in Sources */,
 				046CA7981C4A9C5400CA5E54 /* AppDelegate.m in Sources */,
 				046CA79B1C4A9C5400CA5E54 /* CurrentLocationViewController.m in Sources */,
+				048818B81C4E52B4003D9C64 /* CategoryPickerViewController.m in Sources */,
 				046CA7951C4A9C5400CA5E54 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
