@@ -15,6 +15,7 @@
 		046CA7A31C4A9C5400CA5E54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046CA7A21C4A9C5400CA5E54 /* Assets.xcassets */; };
 		046CA7A61C4A9C5400CA5E54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046CA7A41C4A9C5400CA5E54 /* LaunchScreen.storyboard */; };
 		046CA7AE1C4AA66E00CA5E54 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CA7AD1C4AA66E00CA5E54 /* CoreLocation.framework */; };
+		048818B51C4DE406003D9C64 /* LocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048818B41C4DE406003D9C64 /* LocationDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		046CA7A51C4A9C5400CA5E54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		046CA7A71C4A9C5400CA5E54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		046CA7AD1C4AA66E00CA5E54 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		048818B31C4DE406003D9C64 /* LocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationDetailViewController.h; path = ../LocationDetailViewController.h; sourceTree = "<group>"; };
+		048818B41C4DE406003D9C64 /* LocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationDetailViewController.m; path = ../LocationDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,8 @@
 				046CA79A1C4A9C5400CA5E54 /* CurrentLocationViewController.m */,
 				046CA79C1C4A9C5400CA5E54 /* SecondViewController.h */,
 				046CA79D1C4A9C5400CA5E54 /* SecondViewController.m */,
+				048818B31C4DE406003D9C64 /* LocationDetailViewController.h */,
+				048818B41C4DE406003D9C64 /* LocationDetailViewController.m */,
 				046CA79F1C4A9C5400CA5E54 /* Main.storyboard */,
 				046CA7A21C4A9C5400CA5E54 /* Assets.xcassets */,
 				046CA7A41C4A9C5400CA5E54 /* LaunchScreen.storyboard */,
@@ -158,6 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				048818B51C4DE406003D9C64 /* LocationDetailViewController.m in Sources */,
 				046CA79E1C4A9C5400CA5E54 /* SecondViewController.m in Sources */,
 				046CA7981C4A9C5400CA5E54 /* AppDelegate.m in Sources */,
 				046CA79B1C4A9C5400CA5E54 /* CurrentLocationViewController.m in Sources */,
@@ -308,6 +314,7 @@
 				046CA7AC1C4A9C5400CA5E54 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
