@@ -42,9 +42,16 @@
     NSLog(@"description is %@", _descriptionText);
     
     HudView *hudView = [HudView hudInView:self.navigationController.view animated:YES];
-    hudView.text = @"Tagged";
+
+    Location *location;
+    if (self.locationToEdit != nil) {
+        hudView.text = @"Updated";
+        location = self.locationToEdit;
+    } else {
+        hudView.text = @"Tagged";
+        location = [NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:self.managedObjectContext];
+    }
     
-    Location *location = [NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:self.managedObjectContext];
     location.locationDescription = _descriptionText;
     location.category = _categoryName;
     location.latitude = @(self.coordinate.latitude);
@@ -83,11 +90,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    if (self.locationToEdit != nil) {
+        self.title = @"Edit Location";
+    }
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.descriptionTextView.text = _descriptionText;
     self.categoryLabel.text = _categoryName;
     
@@ -111,6 +117,21 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setLocationToEdit:(Location *)newLocationToEdit {
+    if (_locationToEdit != newLocationToEdit) {
+        _locationToEdit = newLocationToEdit;
+        
+        _descriptionText = _locationToEdit.locationDescription;
+        _categoryName = _locationToEdit.category;
+        _date = _locationToEdit.date;
+        
+        self.coordinate = CLLocationCoordinate2DMake([_locationToEdit.latitude doubleValue],
+                                                      [_locationToEdit.longitude doubleValue]);
+        self.placemark = _locationToEdit.placemark;
+        
+    }
 }
 
 - (NSString *)stringFromPlacemark:(CLPlacemark *)placemark {
