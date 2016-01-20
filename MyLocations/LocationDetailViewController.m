@@ -6,6 +6,7 @@
 //  Copyright © 2016年 shiziwen. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import "LocationDetailViewController.h"
 #import "CategoryPickerViewController.h"
 #import "HudView.h"
@@ -51,10 +52,14 @@
     location.date = _date;
     location.placemark = _placemark;
     
+    NSLog(@"place is %@", _placemark);
+    
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
-        abort();
+        NSLog(@"*** Error: %@", error);
+        FATAL_CORE_DATA_ERROR(error);
+//        abort();
+//        return;
     }
     
     [self performSelector:@selector(closeScreen) withObject:nil afterDelay:0.6];

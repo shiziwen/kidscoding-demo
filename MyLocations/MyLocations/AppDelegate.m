@@ -11,7 +11,9 @@
 #import "AppDelegate.h"
 #import "CurrentLocationViewController.h"
 
-@interface AppDelegate ()
+NSString *const ManagedObjectContextSaveDidFailNotification = @"ManagedObjectContextSaveDidFailNotification";
+
+@interface AppDelegate ()<UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSManagedObjectModel *manageObjectModel;
@@ -21,12 +23,22 @@
 
 @implementation AppDelegate
 
+- (void)fatalCoreDataError:(NSNotificationCenter *)notification {
+    NSLog(@"fatalCoreDataError");
+    
+    UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:NSLocalizedString(@"Internal error", nil) message:NSLocalizedString(@"There was a fatal error in the app and it cannot continue.\n\nPress Ok to terminate the app.Sorry for the inconvenience.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+    [alertView show];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     CurrentLocationViewController *currentLocationViewController = (CurrentLocationViewController *)tabBarController.viewControllers[0];
     currentLocationViewController.managedObjectContext = self.managedObjectContext;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fatalCoreDataError:) name:ManagedObjectContextSaveDidFailNotification object:nil];
     
     return YES;
 }
@@ -84,7 +96,7 @@
         
         NSError *error;
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-            NSLog(@"Error adding persistent store %@, %@", error, [error userInfo]);
+            NSLog(@"*** Error adding persistent store %@, %@", error, [error userInfo]);
             abort();
         }
     }
@@ -103,4 +115,11 @@
     NSLog(@"context is %@", _managedObjectContext);
     return _managedObjectContext;
 }
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    abort();
+}
+
 @end
