@@ -14,6 +14,8 @@
 		041521D21C4EA0B1008A3511 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 041521D01C4EA0B1008A3511 /* Location.m */; };
 		0419108A1C50040100C56293 /* LocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041910891C50040100C56293 /* LocationsViewController.m */; };
 		0419108D1C500C7A00C56293 /* LocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0419108C1C500C7A00C56293 /* LocationCell.m */; };
+		041F0D2F1C512BCB008C0983 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 041F0D2E1C512BCB008C0983 /* MapKit.framework */; };
+		041F0D321C512D55008C0983 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041F0D311C512D55008C0983 /* MapViewController.m */; };
 		046CA7951C4A9C5400CA5E54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CA7941C4A9C5400CA5E54 /* main.m */; };
 		046CA7981C4A9C5400CA5E54 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CA7971C4A9C5400CA5E54 /* AppDelegate.m */; };
 		046CA79B1C4A9C5400CA5E54 /* CurrentLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CA79A1C4A9C5400CA5E54 /* CurrentLocationViewController.m */; };
@@ -39,6 +41,9 @@
 		041910891C50040100C56293 /* LocationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationsViewController.m; sourceTree = "<group>"; };
 		0419108B1C500C7A00C56293 /* LocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationCell.h; sourceTree = "<group>"; };
 		0419108C1C500C7A00C56293 /* LocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationCell.m; sourceTree = "<group>"; };
+		041F0D2E1C512BCB008C0983 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		041F0D301C512D55008C0983 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		041F0D311C512D55008C0983 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		046BBD951C4F450E002059B2 /* MyLocations-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MyLocations-Prefix.pch"; sourceTree = "<group>"; };
 		046CA7901C4A9C5400CA5E54 /* MyLocations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLocations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		046CA7941C4A9C5400CA5E54 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -64,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				041F0D2F1C512BCB008C0983 /* MapKit.framework in Frameworks */,
 				041521BA1C4E8A49008A3511 /* CoreData.framework in Frameworks */,
 				046CA7AE1C4AA66E00CA5E54 /* CoreLocation.framework in Frameworks */,
 			);
@@ -75,6 +81,7 @@
 		046CA7871C4A9C5400CA5E54 = {
 			isa = PBXGroup;
 			children = (
+				041F0D2E1C512BCB008C0983 /* MapKit.framework */,
 				041521CD1C4EA0B1008A3511 /* Location+CoreDataProperties.h */,
 				041521CE1C4EA0B1008A3511 /* Location+CoreDataProperties.m */,
 				041521CF1C4EA0B1008A3511 /* Location.h */,
@@ -110,6 +117,8 @@
 				048818B71C4E52B4003D9C64 /* CategoryPickerViewController.m */,
 				041910881C50040100C56293 /* LocationsViewController.h */,
 				041910891C50040100C56293 /* LocationsViewController.m */,
+				041F0D301C512D55008C0983 /* MapViewController.h */,
+				041F0D311C512D55008C0983 /* MapViewController.m */,
 				0419108B1C500C7A00C56293 /* LocationCell.h */,
 				0419108C1C500C7A00C56293 /* LocationCell.m */,
 				046CA79F1C4A9C5400CA5E54 /* Main.storyboard */,
@@ -209,6 +218,7 @@
 				0419108A1C50040100C56293 /* LocationsViewController.m in Sources */,
 				046CA7981C4A9C5400CA5E54 /* AppDelegate.m in Sources */,
 				0419108D1C500C7A00C56293 /* LocationCell.m in Sources */,
+				041F0D321C512D55008C0983 /* MapViewController.m in Sources */,
 				046CA79B1C4A9C5400CA5E54 /* CurrentLocationViewController.m in Sources */,
 				041521D21C4EA0B1008A3511 /* Location.m in Sources */,
 				041521BD1C4E8B82008A3511 /* HudView.m in Sources */,

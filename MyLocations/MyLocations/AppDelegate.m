@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "CurrentLocationViewController.h"
 #import "LocationsViewController.h"
+#import "MapViewController.h"
 
 NSString *const ManagedObjectContextSaveDidFailNotification = @"ManagedObjectContextSaveDidFailNotification";
 
@@ -42,6 +43,9 @@ NSString *const ManagedObjectContextSaveDidFailNotification = @"ManagedObjectCon
     UINavigationController *navigationController = (UINavigationController *)tabBarController.viewControllers[1];
     LocationsViewController *locationsViewController = (LocationsViewController *)navigationController.viewControllers[0];
     locationsViewController.managedObjectContext = self.managedObjectContext;
+    
+    MapViewController *mapViewController = (MapViewController *)tabBarController.viewControllers[2];
+    mapViewController.managedObjectContext = self.managedObjectContext;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fatalCoreDataError:) name:ManagedObjectContextSaveDidFailNotification object:nil];
     
