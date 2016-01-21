@@ -11,32 +11,53 @@
 #import "LocationCell.h"
 #import "LocationDetailViewController.h"
 
-@interface LocationsViewController ()
+@interface LocationsViewController () <NSFetchedResultsControllerDelegate>
 
 @end
 
 @implementation LocationsViewController {
-    NSArray *_locations;
+//    NSArray *_locations;
+    NSFetchedResultsController *_fetchedResultController;
+}
+
+- (NSFetchedResultsController *)fetchedResultController {
+    if (_fetchedResultController == nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Location" inManagedObjectContext:self.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:@"category" ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
+        [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+        
+        [fetchRequest setFetchBatchSize:20];
+        
+        _fetchedResultController = [[NSFetchedResultsController alloc]
+                                    initWithFetchRequest:fetchRequest
+                                    managedObjectContext:self.managedObjectContext
+                                    sectionNameKeyPath:@"category"
+                                    cacheName:@"Locations"];
+        
+        _fetchedResultController.delegate = self;
+    }
+    
+    return _fetchedResultController;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Location" inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
+    [NSFetchedResultsController deleteCacheWithName:@"Locations"];
+    [self performFetch];
+}
+
+- (void)performFetch {
     NSError *error;
-    NSArray *foundObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error != nil) {
+    if (![self.fetchedResultController performFetch:&error]) {
         FATAL_CORE_DATA_ERROR(error);
         return;
     }
-    
-    _locations = foundObjects;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,7 +68,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_locations count];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultController sections][section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -71,9 +93,31 @@
     return cell;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [[self.fetchedResultController sections] count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultController sections][section];
+    return [sectionInfo name];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Location *location = [self.fetchedResultController objectAtIndexPath:indexPath];
+        [self.managedObjectContext deleteObject:location];
+        
+        NSError *error;
+        if (![self.managedObjectContext save:&error]) {
+            FATAL_CORE_DATA_ERROR(error);
+            return;
+        }
+    }
+}
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     LocationCell *locationCell = (LocationCell *)cell;
-    Location *location = _locations[indexPath.row];
+    Location *location = [self.fetchedResultController objectAtIndexPath:indexPath];
     
     if ([location.locationDescription length] > 0) {
         locationCell.descriptionLabel.text = location.locationDescription;
@@ -140,10 +184,70 @@
         
         controller.managedObjectContext = self.managedObjectContext;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        Location *location = _locations[indexPath.row];
+        Location *location = [self.fetchedResultController objectAtIndexPath:indexPath];
         controller.locationToEdit = location;
     }
 }
 
+#pragma mark - NSFetchedResultsControllerDelegate
 
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    NSLog(@"controllerWillChangeContent");
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            NSLog(@"*** NSFetchedResultsChangeInsert");
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        
+        case NSFetchedResultsChangeDelete:
+            NSLog(@"*** NSFetchedResultsChangeDelete");
+            [self.tableView deleteRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            NSLog(@"*** NSFetchedResultsChangeUpdate");
+            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            NSLog(@"*** NSFetchedResultsChangeMove");
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        default:
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            NSLog(@"*** NSFetchedResultsChangeInsert (section)");
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        
+        case NSFetchedResultsChangeDelete:
+            NSLog(@"*** NSFetchedResultsChangeDelete (section)");
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    NSLog(@"controllerDidChangeContent");
+    [self.tableView endUpdates];
+}
+
+/*It’s always a good idea to explicitly set the delegate to nil when you no longer need the NSFetchedResultsController, 
+ just so you don’t get any more notifications that were still pending.
+ */
+- (void)dealloc {
+    _fetchedResultController.delegate = nil;
+}
 @end
