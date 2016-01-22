@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSDate *date;
 @property (nullable, nonatomic, retain) NSString *locationDescription;
 @property (nullable, nonatomic, retain) CLPlacemark *placemark;
+@property (nullable, nonatomic, retain) NSNumber *photoId;
 
 @end
 

@@ -157,8 +157,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VcV-CA-YMu">
+                                                    <rect key="frame" x="63" y="-42" width="240" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KMv-dR-kzF">
-                                                    <rect key="frame" x="15" y="12" width="84" height="21"/>
+                                                    <rect key="frame" x="15" y="11" width="84" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -292,8 +296,10 @@
                         <outlet property="categoryLabel" destination="OFz-Ev-CaD" id="QmJ-Cb-bBm"/>
                         <outlet property="dateLabel" destination="1OC-22-u8V" id="Gr5-vv-hMk"/>
                         <outlet property="descriptionTextView" destination="ZNk-Wr-BwR" id="3i1-9n-6aZ"/>
+                        <outlet property="imageView" destination="VcV-CA-YMu" id="iRc-6M-hKn"/>
                         <outlet property="latitudeLabel" destination="Ego-hE-pM1" id="T3B-zL-I5x"/>
                         <outlet property="longitudeLabel" destination="Qge-wS-fxR" id="Q0R-d0-lcI"/>
+                        <outlet property="photoLabel" destination="KMv-dR-kzF" id="yFA-B9-aC8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HyN-FD-gra" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -397,24 +403,29 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LRa-GM-JMK">
-                                            <rect key="frame" x="8" y="8" width="304" height="21"/>
+                                            <rect key="frame" x="82" y="8" width="238" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lP2-4W-ScK">
-                                            <rect key="frame" x="8" y="27" width="304" height="21"/>
+                                            <rect key="frame" x="82" y="27" width="238" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="tAJ-Wh-EAD">
+                                            <rect key="frame" x="15" y="2" width="52" height="52"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="addressLabel" destination="lP2-4W-ScK" id="FYN-gQ-0wP"/>
                                     <outlet property="descriptionLabel" destination="LRa-GM-JMK" id="eb5-Px-xMc"/>
+                                    <outlet property="photoImageView" destination="tAJ-Wh-EAD" id="wB8-ls-KrP"/>
                                     <segue destination="vAx-5g-nUc" kind="modal" identifier="EditLocation" id="8SA-Rj-nVx"/>
                                 </connections>
                             </tableViewCell>
@@ -445,7 +456,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5G-gx-htl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="392" y="430"/>
+            <point key="canvasLocation" x="340" y="446"/>
         </scene>
         <!--Map-->
         <scene sceneID="I8o-ix-REe">
@@ -501,6 +512,6 @@
         <image name="first" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LoS-JC-h5V"/>
+        <segue reference="8SA-Rj-nVx"/>
     </inferredMetricsTieBreakers>
 </document>
