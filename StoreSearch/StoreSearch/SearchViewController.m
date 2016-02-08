@@ -7,6 +7,7 @@
 //
 
 #import "SearchViewController.h"
+#import "SearchResult.h"
 
 @interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
@@ -42,6 +43,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (_searchResults == nil) {
         return 0;
+    } else if ([_searchResults count] == 0) {
+        return 1;
     } else {
         return [_searchResults count];
     }
@@ -52,10 +55,19 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    cell.textLabel.text = _searchResults[indexPath.row];
+    if ([_searchResults count] == 0) {
+        cell.textLabel.text =@"(Noting Found)";
+        cell.detailTextLabel.text = @"";
+    } else {
+        SearchResult *searchResult = _searchResults[indexPath.row];
+        cell.textLabel.text = searchResult.name;
+        cell.detailTextLabel.text = searchResult.artistName;
+
+    }
+    
     return cell;
 }
 
@@ -69,8 +81,14 @@
     
     _searchResults = [NSMutableArray arrayWithCapacity:10];
     
-    for (int i = 0; i < 3; i++) {
-        [_searchResults addObject:[NSString stringWithFormat:@"Fake result %d for %@", i, searchBar.text]];
+    if (![searchBar.text isEqualToString:@"Jordan"]) {
+        for (int i = 0; i < 3; i++) {
+            SearchResult *searchResult = [[SearchResult alloc] init];
+            searchResult.name = [NSString stringWithFormat:@"Fake result %d for", i];
+            searchResult.artistName = searchBar.text;
+            [_searchResults addObject:searchResult];
+            
+        }
     }
     
     [self.tableView reloadData];
@@ -81,4 +99,17 @@
     return UIBarPositionTopAttached;
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([_searchResults count] == 0) {
+        return nil;
+    } else {
+        return indexPath;
+    }
+}
 @end
