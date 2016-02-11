@@ -88,25 +88,55 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    // the keyboard will hide itself until you tap inside the search bar again
-    [searchBar resignFirstResponder];
+- (NSURL *)urlWithSearchText:(NSString *)searchText {
+    NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSLog(@"The search text is %@", searchBar.text);
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
     
-    _searchResults = [NSMutableArray arrayWithCapacity:10];
+    NSURL *url = [NSURL URLWithString:urlString];
     
-    if (![searchBar.text isEqualToString:@"Jordan"]) {
-        for (int i = 0; i < 3; i++) {
-            SearchResult *searchResult = [[SearchResult alloc] init];
-            searchResult.name = [NSString stringWithFormat:@"Fake result %d for", i];
-            searchResult.artistName = searchBar.text;
-            [_searchResults addObject:searchResult];
-            
-        }
+    return url;
+}
+
+- (NSString *)performStoreRequestWithUrl:(NSURL *)url {
+    NSError *error;
+    NSString *resultString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+    if (resultString == nil) {
+        NSLog(@"Fetch error is %@", error);
+        return nil;
     }
     
-    [self.tableView reloadData];
+    return resultString;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    if ([searchBar.text length] > 0) {
+        [searchBar resignFirstResponder];
+        _searchResults = [NSMutableArray arrayWithCapacity:10];
+        
+        NSURL *url = [self urlWithSearchText:searchBar.text];
+        NSLog(@"URL is %@", url);
+        
+        NSString *jsonString = [self performStoreRequestWithUrl:url];
+        NSLog(@"Received JSON string: %@", jsonString);
+        
+        [self.tableView reloadData];
+    }
+    
+    
+//    NSLog(@"The search text is %@", searchBar.text);
+//    
+//    if (![searchBar.text isEqualToString:@"Jordan"]) {
+//        for (int i = 0; i < 3; i++) {
+//            SearchResult *searchResult = [[SearchResult alloc] init];
+//            searchResult.name = [NSString stringWithFormat:@"Fake result %d for", i];
+//            searchResult.artistName = searchBar.text;
+//            [_searchResults addObject:searchResult];
+//            
+//        }
+//    }
+    
+    
 }
 
 - (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
