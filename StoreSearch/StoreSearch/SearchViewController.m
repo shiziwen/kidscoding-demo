@@ -89,7 +89,12 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 #pragma mark - UISearchBarDelegate
 
 - (void)showNetworkError {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops..." message:@"There was an error reading from the iTunes Store. Please try again" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:@"Whoops..."
+                              message:@"There was an error reading from the iTunes Store. Please try again"
+                              delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
     
     [alertView show];
     
@@ -134,6 +139,18 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
     return resultString;
 }
 
+- (void)parseDictionary:(NSDictionary *)dictionary {
+    NSArray *array = dictionary[@"results"];
+    if (array == nil) {
+        NSLog(@"Expected results array");
+        return;
+    }
+    
+    for (NSDictionary *resultDict in array) {
+        NSLog(@"wrapperType: %@, kind: %@", resultDict[@"wrapperType"], resultDict[@"kind"]);
+    }
+}
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     if ([searchBar.text length] > 0) {
         [searchBar resignFirstResponder];
@@ -156,6 +173,8 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
         }
         
         NSLog(@"Dictionary: %@", dictionary);
+        
+        [self parseDictionary:dictionary];
 
         
         [self.tableView reloadData];
