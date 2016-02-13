@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchResult.h"
 #import "SearchResultCell.h"
+#import <AFNetworking/AFNetworking.h>
 
 static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
@@ -22,6 +23,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 @implementation SearchViewController {
     NSMutableArray *_searchResults;
     BOOL _isLoading;
+    NSOperationQueue *_queue;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -29,6 +31,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _queue = [[NSOperationQueue alloc] init];
     }
     return self;
 }
@@ -277,47 +280,78 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     if ([searchBar.text length] > 0) {
         [searchBar resignFirstResponder];
         
+        [_queue cancelAllOperations];
+        
         _isLoading = YES;
         [self.tableView reloadData];
         
         _searchResults = [NSMutableArray arrayWithCapacity:10];
         
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        NSURL *url = [self urlWithSearchText:searchBar.text];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
         
-        dispatch_async(queue, ^{
-            NSURL *url = [self urlWithSearchText:searchBar.text];
-            NSLog(@"URL is %@", url);
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        operation.responseSerializer = [AFJSONResponseSerializer serializer];
+        
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id reponseObject) {
+            NSLog(@"Succuess %@", reponseObject);
             
-            NSString *jsonString = [self performStoreRequestWithUrl:url];
-            NSLog(@"Received JSON string: %@", jsonString);
-            if (jsonString == nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showNetworkError];
-                });
-                
-                return;
-            }
-            
-            NSDictionary *dictionary = [self parseJson:jsonString];
-            if (dictionary == nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showNetworkError];
-                });
-                
-                return;
-            }
-            
-            NSLog(@"Dictionary: %@", dictionary);
-            
-            [self parseDictionary:dictionary];
+            [self parseDictionary:reponseObject];
             [_searchResults sortUsingSelector:@selector(compareName:)];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _isLoading = NO;
-                [self.tableView reloadData];
-            });
+            _isLoading = NO;
+            [self.tableView reloadData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (operation.isCancelled) {
+                return;
+            }
             
-        });
+            NSLog(@"Failure %@", error);
+            
+            [self showNetworkError];
+            
+            _isLoading = NO;
+            [self.tableView reloadData];
+        }];
+        
+        [_queue addOperation:operation];
+        
+//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//        
+//        dispatch_async(queue, ^{
+//            NSURL *url = [self urlWithSearchText:searchBar.text];
+//            NSLog(@"URL is %@", url);
+//            
+//            NSString *jsonString = [self performStoreRequestWithUrl:url];
+//            NSLog(@"Received JSON string: %@", jsonString);
+//            if (jsonString == nil) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self showNetworkError];
+//                });
+//                
+//                return;
+//            }
+//            
+//            NSDictionary *dictionary = [self parseJson:jsonString];
+//            if (dictionary == nil) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self showNetworkError];
+//                });
+//                
+//                return;
+//            }
+//            
+//            NSLog(@"Dictionary: %@", dictionary);
+//            
+//            [self parseDictionary:dictionary];
+//            [_searchResults sortUsingSelector:@selector(compareName:)];
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                _isLoading = NO;
+//                [self.tableView reloadData];
+//            });
+//            
+//        });
         
     }
     
