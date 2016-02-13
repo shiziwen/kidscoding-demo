@@ -122,15 +122,8 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
         SearchResultCell *cell = (SearchResultCell *)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier];
         
         SearchResult *searchResult = _searchResults[indexPath.row];
-        cell.nameLabel.text = searchResult.name;
         
-        NSString *artistName = searchResult.artistName;
-        if (artistName == nil) {
-            artistName = @"Unknown";
-        }
-        
-        NSString *kind = [self kindForDisplay:searchResult.kind];
-        cell.artistNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", artistName, kind];
+        [cell configureForSearchResult:searchResult];
         
         return cell;
 
@@ -243,14 +236,15 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     SearchResult *searchResult = [[SearchResult alloc] init];
     searchResult.name = dictionary[@"trackName"];
     searchResult.artistName = dictionary[@"artistName"];
-    searchResult.artworkURL60 = dictionary[@"artworkURL60"];
-    searchResult.artworkURL100 = dictionary[@"artworkURL100"];
+    searchResult.artworkURL60 = dictionary[@"artworkUrl60"];
+    searchResult.artworkURL100 = dictionary[@"artworkUrl100"];
     searchResult.storeURL = dictionary[@"trackViewUrl"];
     searchResult.kind = dictionary[@"kind"];
     searchResult.price = dictionary[@"trackPrice"];
     searchResult.currency = dictionary[@"currency"];
     searchResult.genre = dictionary[@"primaryGenreName"];
     
+//    NSLog(@"image url is %@", searchResult.artworkURL60);
     return searchResult;
 }
 
