@@ -18,6 +18,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 @interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @end
 
 @implementation SearchViewController {
@@ -39,7 +40,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(108, 0, 0, 0);
     self.tableView.rowHeight = 80;
     
     UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
@@ -169,10 +170,29 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     return resultObject;
 }
 
-- (NSURL *)urlWithSearchText:(NSString *)searchText {
+- (NSURL *)urlWithSearchText:(NSString *)searchText category:(NSInteger)category {
+    NSString *categoryName;
+    switch (category) {
+        case 0:
+            categoryName = @"";
+            break;
+        case 1:
+            categoryName = @"musicTrack";
+            break;
+        case 2:
+            categoryName = @"software";
+            break;
+        case 3:
+            categoryName = @"ebook";
+            break;
+            
+        default:
+            break;
+    }
+    
     NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200&entity=%@", escapedSearchText, categoryName];
     
     NSURL *url = [NSURL URLWithString:urlString];
     
@@ -276,9 +296,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     return searchResult;
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    if ([searchBar.text length] > 0) {
-        [searchBar resignFirstResponder];
+- (void)performSearch {
+    if ([self.searchBar.text length] > 0) {
+        [self.searchBar resignFirstResponder];
         
         [_queue cancelAllOperations];
         
@@ -287,7 +307,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
         
         _searchResults = [NSMutableArray arrayWithCapacity:10];
         
-        NSURL *url = [self urlWithSearchText:searchBar.text];
+        NSURL *url = [self urlWithSearchText:self.searchBar.text category:self.segmentControl.selectedSegmentIndex];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -316,59 +336,12 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
         
         [_queue addOperation:operation];
         
-//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//        
-//        dispatch_async(queue, ^{
-//            NSURL *url = [self urlWithSearchText:searchBar.text];
-//            NSLog(@"URL is %@", url);
-//            
-//            NSString *jsonString = [self performStoreRequestWithUrl:url];
-//            NSLog(@"Received JSON string: %@", jsonString);
-//            if (jsonString == nil) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self showNetworkError];
-//                });
-//                
-//                return;
-//            }
-//            
-//            NSDictionary *dictionary = [self parseJson:jsonString];
-//            if (dictionary == nil) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self showNetworkError];
-//                });
-//                
-//                return;
-//            }
-//            
-//            NSLog(@"Dictionary: %@", dictionary);
-//            
-//            [self parseDictionary:dictionary];
-//            [_searchResults sortUsingSelector:@selector(compareName:)];
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                _isLoading = NO;
-//                [self.tableView reloadData];
-//            });
-//            
-//        });
-        
     }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     
-    
-//    NSLog(@"The search text is %@", searchBar.text);
-//    
-//    if (![searchBar.text isEqualToString:@"Jordan"]) {
-//        for (int i = 0; i < 3; i++) {
-//            SearchResult *searchResult = [[SearchResult alloc] init];
-//            searchResult.name = [NSString stringWithFormat:@"Fake result %d for", i];
-//            searchResult.artistName = searchBar.text;
-//            [_searchResults addObject:searchResult];
-//            
-//        }
-//    }
-    
-    
+    [self performSearch];
 }
 
 - (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
@@ -389,4 +362,13 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
         return indexPath;
     }
 }
+
+- (IBAction)segmentChanged:(UISegmentedControl *)sender {
+    NSLog(@"segment changed: %ld", (long)sender.selectedSegmentIndex);
+    
+    if (_searchResults != nil) {
+        [self performSearch];
+    }
+}
+
 @end
