@@ -350,7 +350,11 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
-    [self presentViewController:controller animated:YES completion:nil];
+    
+    controller.view.frame = self.view.bounds;
+    [self.tableView addSubview:controller.view];
+    [self addChildViewController:controller];
+    [controller didMoveToParentViewController:self];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
