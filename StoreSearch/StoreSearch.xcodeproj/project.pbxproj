@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		041F51011C70FCC800F31568 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 041F50FF1C70FCC800F31568 /* DetailViewController.m */; };
 		041F51021C70FCC800F31568 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041F51001C70FCC800F31568 /* DetailViewController.xib */; };
+		041F51061C71140400F31568 /* DetailViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 041F51041C71140400F31568 /* DetailViewController1.m */; };
+		041F51071C71140400F31568 /* DetailViewController1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041F51051C71140400F31568 /* DetailViewController1.xib */; };
 		0420D5E21C6A4696000545FA /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0420D5E11C6A4696000545FA /* SearchResultCell.xib */; };
 		0420D5E51C6A4D19000545FA /* SearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0420D5E41C6A4D19000545FA /* SearchResultCell.m */; };
 		0420D5E71C6A508D000545FA /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0420D5E61C6A508D000545FA /* NothingFoundCell.xib */; };
@@ -27,6 +29,9 @@
 		041F50FE1C70FCC800F31568 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		041F50FF1C70FCC800F31568 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		041F51001C70FCC800F31568 /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
+		041F51031C71140400F31568 /* DetailViewController1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController1.h; sourceTree = "<group>"; };
+		041F51041C71140400F31568 /* DetailViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController1.m; sourceTree = "<group>"; };
+		041F51051C71140400F31568 /* DetailViewController1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController1.xib; sourceTree = "<group>"; };
 		0420D5E11C6A4696000545FA /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		0420D5E31C6A4D19000545FA /* SearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultCell.h; sourceTree = "<group>"; };
 		0420D5E41C6A4D19000545FA /* SearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultCell.m; sourceTree = "<group>"; };
@@ -101,6 +106,9 @@
 				041F50FE1C70FCC800F31568 /* DetailViewController.h */,
 				041F50FF1C70FCC800F31568 /* DetailViewController.m */,
 				041F51001C70FCC800F31568 /* DetailViewController.xib */,
+				041F51031C71140400F31568 /* DetailViewController1.h */,
+				041F51041C71140400F31568 /* DetailViewController1.m */,
+				041F51051C71140400F31568 /* DetailViewController1.xib */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -195,6 +203,7 @@
 				041F51021C70FCC800F31568 /* DetailViewController.xib in Resources */,
 				043714261C6E408400B90A9A /* LoadingCell.xib in Resources */,
 				0420D5E21C6A4696000545FA /* SearchResultCell.xib in Resources */,
+				041F51071C71140400F31568 /* DetailViewController1.xib in Resources */,
 				0420D5E71C6A508D000545FA /* NothingFoundCell.xib in Resources */,
 				0477D2881C55362400737F19 /* SearchViewController.xib in Resources */,
 			);
@@ -257,6 +266,7 @@
 			files = (
 				0477D2721C55341700737F19 /* AppDelegate.m in Sources */,
 				0477D2871C55362400737F19 /* SearchViewController.m in Sources */,
+				041F51061C71140400F31568 /* DetailViewController1.m in Sources */,
 				0420D5E51C6A4D19000545FA /* SearchResultCell.m in Sources */,
 				045897661C690B400030AC17 /* SearchResult.m in Sources */,
 				0477D26F1C55341700737F19 /* main.m in Sources */,

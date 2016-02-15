@@ -347,11 +347,13 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.searchBar resignFirstResponder];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
     
-    controller.view.frame = self.view.bounds;
+//    controller.view.frame = self.view.bounds;
+    controller.view.frame = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - 108, self.view.bounds.size.width, self.view.bounds.size.height);
     [self.tableView addSubview:controller.view];
     [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
