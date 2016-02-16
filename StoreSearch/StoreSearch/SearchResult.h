@@ -22,4 +22,6 @@
 @property (nonatomic, copy) NSDecimalNumber *price;
 
 - (NSComparisonResult)compareName:(SearchResult *)other;
+
+- (NSString *)kindForDisplay;
 @end
