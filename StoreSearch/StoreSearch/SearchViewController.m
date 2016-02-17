@@ -356,7 +356,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     
     controller.view.frame = self.view.bounds;
 //    controller.view.frame = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y - 108, self.view.bounds.size.width, self.view.bounds.size.height);
-    [self.tableView addSubview:controller.view];
+    [self.view addSubview:controller.view];
     [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
 }
