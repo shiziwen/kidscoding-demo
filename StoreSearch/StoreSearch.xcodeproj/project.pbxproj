@@ -14,6 +14,8 @@
 		0420D5E21C6A4696000545FA /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0420D5E11C6A4696000545FA /* SearchResultCell.xib */; };
 		0420D5E51C6A4D19000545FA /* SearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0420D5E41C6A4D19000545FA /* SearchResultCell.m */; };
 		0420D5E71C6A508D000545FA /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0420D5E61C6A508D000545FA /* NothingFoundCell.xib */; };
+		042BD4DB1C76454B0068DF89 /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 042BD4D91C76454B0068DF89 /* LandscapeViewController.m */; };
+		042BD4DC1C76454B0068DF89 /* LandscapeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 042BD4DA1C76454B0068DF89 /* LandscapeViewController.xib */; };
 		042CF7F11C7380A000FFBE00 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 042CF7F01C7380A000FFBE00 /* GradientView.m */; };
 		043714261C6E408400B90A9A /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043714251C6E408400B90A9A /* LoadingCell.xib */; };
 		045897661C690B400030AC17 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 045897651C690B400030AC17 /* SearchResult.m */; };
@@ -37,6 +39,9 @@
 		0420D5E31C6A4D19000545FA /* SearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultCell.h; sourceTree = "<group>"; };
 		0420D5E41C6A4D19000545FA /* SearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultCell.m; sourceTree = "<group>"; };
 		0420D5E61C6A508D000545FA /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		042BD4D81C76454B0068DF89 /* LandscapeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeViewController.h; sourceTree = "<group>"; };
+		042BD4D91C76454B0068DF89 /* LandscapeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeViewController.m; sourceTree = "<group>"; };
+		042BD4DA1C76454B0068DF89 /* LandscapeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandscapeViewController.xib; sourceTree = "<group>"; };
 		042CF7EF1C7380A000FFBE00 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		042CF7F01C7380A000FFBE00 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		043714251C6E408400B90A9A /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
@@ -114,6 +119,9 @@
 				041F51051C71140400F31568 /* DetailViewController1.xib */,
 				042CF7EF1C7380A000FFBE00 /* GradientView.h */,
 				042CF7F01C7380A000FFBE00 /* GradientView.m */,
+				042BD4D81C76454B0068DF89 /* LandscapeViewController.h */,
+				042BD4D91C76454B0068DF89 /* LandscapeViewController.m */,
+				042BD4DA1C76454B0068DF89 /* LandscapeViewController.xib */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0477D27D1C55341700737F19 /* LaunchScreen.storyboard in Resources */,
+				042BD4DC1C76454B0068DF89 /* LandscapeViewController.xib in Resources */,
 				0477D27A1C55341700737F19 /* Assets.xcassets in Resources */,
 				041F51021C70FCC800F31568 /* DetailViewController.xib in Resources */,
 				043714261C6E408400B90A9A /* LoadingCell.xib in Resources */,
@@ -273,6 +282,7 @@
 				0477D2871C55362400737F19 /* SearchViewController.m in Sources */,
 				042CF7F11C7380A000FFBE00 /* GradientView.m in Sources */,
 				041F51061C71140400F31568 /* DetailViewController1.m in Sources */,
+				042BD4DB1C76454B0068DF89 /* LandscapeViewController.m in Sources */,
 				0420D5E51C6A4D19000545FA /* SearchResultCell.m in Sources */,
 				045897661C690B400030AC17 /* SearchResult.m in Sources */,
 				0477D26F1C55341700737F19 /* main.m in Sources */,

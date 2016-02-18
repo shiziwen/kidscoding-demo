@@ -11,6 +11,7 @@
 #import "SearchResultCell.h"
 #import <AFNetworking/AFNetworking.h>
 #import "DetailViewController.h"
+#import "LandscapeViewController.h"
 
 static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
@@ -26,6 +27,8 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     NSMutableArray *_searchResults;
     BOOL _isLoading;
     NSOperationQueue *_queue;
+    LandscapeViewController *_landscapeViewController;
+    UIStatusBarStyle _statusBarStyle;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,6 +57,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     [self.tableView registerNib:cellNib forCellReuseIdentifier:LoadingCellIdentifier];
     
     [self.searchBar becomeFirstResponder];
+    
+    _statusBarStyle = UIStatusBarStyleDefault;
+    NSLog(@"status bar style is %ld", (long)_statusBarStyle);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -373,4 +379,66 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     }
 }
 
+// When a view controller is about to be flipped over, it will let you know with this method.
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        [self hideLandscapeViewWithDuration:duration];
+    } else {
+        [self showLandscapeViewWithDuration:duration];
+    }
+}
+
+- (void)showLandscapeViewWithDuration:(NSTimeInterval)duration {
+    NSLog(@"showLandscapeViewWithDuration");
+    
+    if (_landscapeViewController == nil) {
+        _landscapeViewController = [[LandscapeViewController alloc] initWithNibName:@"LandscapeViewController" bundle:nil];
+        
+        _landscapeViewController.view.frame = self.view.bounds;
+        _landscapeViewController.view.alpha = 0.0f;
+        
+        [self.view addSubview:_landscapeViewController.view];
+        [self addChildViewController:_landscapeViewController];
+        
+        [UIView animateWithDuration:duration animations:^{
+            _landscapeViewController.view.alpha = 1.0f;
+            
+            _statusBarStyle = UIStatusBarStyleLightContent;
+            [self setNeedsStatusBarAppearanceUpdate];
+            NSLog(@"status bar style is %ld", (long)_statusBarStyle);
+        } completion:^(BOOL finished){
+            [_landscapeViewController didMoveToParentViewController:self];
+        }];
+    }
+}
+
+- (void)hideLandscapeViewWithDuration:(NSTimeInterval)duration {
+    NSLog(@"hideLandscapeViewWithDuration");
+    
+    if (_landscapeViewController != nil) {
+        [_landscapeViewController willMoveToParentViewController:nil];
+        
+        [UIView animateWithDuration:duration animations:^{
+            _landscapeViewController.view.alpha = 0.0f;
+            
+            _statusBarStyle = UIStatusBarStyleDefault;
+            _statusBarStyle = UIStatusBarStyleLightContent;
+            [self setNeedsStatusBarAppearanceUpdate];
+            NSLog(@"status bar style is %ld", (long)_statusBarStyle);
+        } completion:^(BOOL finished){
+            [_landscapeViewController.view removeFromSuperview];
+            [_landscapeViewController removeFromParentViewController];
+            
+            _landscapeViewController = nil;
+        }];
+    }
+}
+
+// This method is called by UIKit to determine what color to make the status bar.
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    NSLog(@"get status bar style");
+    return _statusBarStyle;
+}
 @end
