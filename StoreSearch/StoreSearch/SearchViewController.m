@@ -417,7 +417,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
         }];
         
         [self.searchBar resignFirstResponder];
-        [_detailViewController dismissFromParentViewController];
+        [_detailViewController dismissFromParentViewControllerWithAnimationType:DetailViewControllerAnimationTypeFade];
     }
 }
 
