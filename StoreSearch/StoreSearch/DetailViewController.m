@@ -56,10 +56,11 @@
 }
 
 - (IBAction)close:(id)sender {
-    [self dismissFromParentViewController:DetailViewControllerAnimationTypeSlide];
+    [self dismissFromParentViewControllerWithAnimationType:DetailViewControllerAnimationTypeSlide];
 }
-
-- (void)dismissFromParentViewController:(DetailViewControllerAnimationType)animationType {
+   
+    
+- (void)dismissFromParentViewControllerWithAnimationType:(DetailViewControllerAnimationType)animationType {
     [self willMoveToParentViewController:nil];
     
     [UIView animateWithDuration:0.4 animations:^{
