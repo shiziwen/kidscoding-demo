@@ -29,6 +29,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     NSOperationQueue *_queue;
     LandscapeViewController *_landscapeViewController;
     UIStatusBarStyle _statusBarStyle;
+    DetailViewController *_detailViewController;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -361,6 +362,8 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     controller.searchResult = _searchResults[indexPath.row];
     
     [controller presentInParentViewController:self];
+    
+    _detailViewController = controller;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -392,6 +395,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 - (void)showLandscapeViewWithDuration:(NSTimeInterval)duration {
     NSLog(@"showLandscapeViewWithDuration");
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
     if (_landscapeViewController == nil) {
         _landscapeViewController = [[LandscapeViewController alloc] initWithNibName:@"LandscapeViewController" bundle:nil];
@@ -411,6 +415,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
         } completion:^(BOOL finished){
             [_landscapeViewController didMoveToParentViewController:self];
         }];
+        
+        [self.searchBar resignFirstResponder];
+        [_detailViewController dismissFromParentViewController];
     }
 }
 
@@ -424,7 +431,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
             _landscapeViewController.view.alpha = 0.0f;
             
             _statusBarStyle = UIStatusBarStyleDefault;
-            _statusBarStyle = UIStatusBarStyleLightContent;
+//            _statusBarStyle = UIStatusBarStyleLightContent;
             [self setNeedsStatusBarAppearanceUpdate];
             NSLog(@"status bar style is %ld", (long)_statusBarStyle);
         } completion:^(BOOL finished){
@@ -441,4 +448,5 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     NSLog(@"get status bar style");
     return _statusBarStyle;
 }
+
 @end
