@@ -9,6 +9,8 @@
 #import "LandscapeViewController.h"
 
 @interface LandscapeViewController ()
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControll;
 
 @end
 
@@ -17,6 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LandscapeBackground"]];
+    self.scrollView.contentSize = CGSizeMake(1000, self.scrollView.bounds.size.height);
 }
 
 - (void)didReceiveMemoryWarning {
