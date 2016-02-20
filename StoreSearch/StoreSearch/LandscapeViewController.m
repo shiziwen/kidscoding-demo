@@ -6,6 +6,7 @@
 //  Copyright © 2016年 shiziwen. All rights reserved.
 //
 
+#import <AFNetworking/UIButton+AFNetworking.h>
 #import "LandscapeViewController.h"
 #import "SearchResult.h"
 
@@ -75,10 +76,12 @@
     for (SearchResult *searchResult in self.searchResults) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         
-        button.backgroundColor = [UIColor whiteColor];
-        [button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"LandscapeButton"] forState:UIControlStateNormal];
+//        [button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
         
         button.frame = CGRectMake(x + marginHorz, 20.0f + row*itemHeight + marginVert, buttonWidth, buttonHeight);
+        
+        [self downloadImageForSearchResult:searchResult andPlaceOnButton:button];
         
         [self.scrollView addSubview:button];
         
@@ -124,6 +127,10 @@
 
 - (void)dealloc {
     NSLog(@"dealloc %@", self);
+    
+    for (UIButton *button in self.scrollView.subviews) {
+//        [button cancelImageRequestOperationForState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)pageChanged:(id)sender {
@@ -143,6 +150,33 @@
     CGFloat width = self.scrollView.bounds.size.width;
     int currentPage = (self.scrollView.contentOffset.x + width/2.0f) / width;
     self.pageControll.currentPage = currentPage;
+}
+
+- (void)downloadImageForSearchResult:(SearchResult *)searchResult andPlaceOnButton:(UIButton *)button {
+    NSURL *url = [NSURL URLWithString:searchResult.artworkURL60];
+    NSLog(@"button image url is %@", url);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    __weak UIButton *weakButton = button;
+    
+    [button setImageForState:UIControlStateNormal
+              withURLRequest:request
+            placeholderImage:[UIImage imageNamed:@"LandscapeButton"]
+                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                         UIImage *unscaledImage = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:image.imageOrientation];
+                         
+                         [weakButton setImage:unscaledImage forState:UIControlStateNormal];
+//                         [button setImage:image forState:UIControlStateNormal];
+                         NSLog(@"set iamge success");
+                     }
+                     failure:^(NSError *error) {
+                         NSLog(@"error is %@", error);
+                     }];
+
+    
+//    [button setImageForState:UIControlStateNormal withURL:url];
 }
 
 @end
