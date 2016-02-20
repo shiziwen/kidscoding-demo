@@ -9,7 +9,7 @@
 #import "LandscapeViewController.h"
 #import "SearchResult.h"
 
-@interface LandscapeViewController ()
+@interface LandscapeViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControll;
 
@@ -33,6 +33,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LandscapeBackground"]];
+    
+    self.pageControll.numberOfPages = 0;
 
 }
 
@@ -52,6 +54,7 @@
     CGFloat extraSpace = 0.0f;
     
     CGFloat scrollViewWidth = self.scrollView.bounds.size.width;
+    NSLog(@"scrollViewWidth is %f", scrollViewWidth);
     if (scrollViewWidth > 480.0f) {
         columnsPerPage = 6;
         itemWidth = 94.0f;
@@ -74,7 +77,8 @@
         
         button.backgroundColor = [UIColor whiteColor];
         [button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
-        button.frame = CGRectMake(x + marginHorz, 20.0f + row*itemHeight, buttonWidth, buttonHeight);
+        
+        button.frame = CGRectMake(x + marginHorz, 20.0f + row*itemHeight + marginVert, buttonWidth, buttonHeight);
         
         [self.scrollView addSubview:button];
         
@@ -98,6 +102,9 @@
     self.scrollView.contentSize = CGSizeMake(numPages*scrollViewWidth, self.scrollView.bounds.size.height);
     
     NSLog(@"NUmbers of pages: %d", numPages);
+    
+    self.pageControll.numberOfPages = numPages;
+    self.pageControll.currentPage = 0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,6 +124,25 @@
 
 - (void)dealloc {
     NSLog(@"dealloc %@", self);
+}
+
+- (IBAction)pageChanged:(id)sender {
+    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.scrollView.contentOffset = CGPointMake(self.scrollView.bounds.size.width, 0);
+                     }
+                     completion:nil];
+}
+
+# pragma mark - UIScrollView Delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat width = self.scrollView.bounds.size.width;
+    int currentPage = (self.scrollView.contentOffset.x + width/2.0f) / width;
+    self.pageControll.currentPage = currentPage;
 }
 
 @end
