@@ -74,7 +74,7 @@
     int column = 0;
     
     for (SearchResult *searchResult in self.searchResults) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [button setBackgroundImage:[UIImage imageNamed:@"LandscapeButton"] forState:UIControlStateNormal];
 //        [button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
@@ -154,12 +154,13 @@
 
 - (void)downloadImageForSearchResult:(SearchResult *)searchResult andPlaceOnButton:(UIButton *)button {
     NSURL *url = [NSURL URLWithString:searchResult.artworkURL60];
-    NSLog(@"button image url is %@", url);
+//    NSLog(@"button image url is %@", url);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
     __weak UIButton *weakButton = button;
+    
     
     [button setImageForState:UIControlStateNormal
               withURLRequest:request
@@ -169,7 +170,7 @@
                          
                          [weakButton setImage:unscaledImage forState:UIControlStateNormal];
 //                         [button setImage:image forState:UIControlStateNormal];
-                         NSLog(@"set iamge success");
+//                         NSLog(@"set iamge success");
                      }
                      failure:^(NSError *error) {
                          NSLog(@"error is %@", error);
