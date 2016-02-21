@@ -58,7 +58,10 @@
         if (self.search.isLoading) {
             [self showSpinner];
             
-        } else {
+        } else if ([self.search.searchResults count] == 0) {
+            [self showNothingFoundLabel];
+        }
+        else {
             [self tileButtons];
         }        
     }
@@ -132,7 +135,13 @@
 
 - (void)searchResultsReceived {
     [self hideSpinner];
-    [self tileButtons];
+    
+    if ([self.search.searchResults count] == 0) {
+        [self showNothingFoundLabel];
+    } else {
+        [self tileButtons];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -205,6 +214,20 @@
 //    [button setImageForState:UIControlStateNormal withURL:url];
 }
 
-
+- (void)showNothingFoundLabel {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.text = @"Nothing found";
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    
+    [label sizeToFit];
+    CGRect rect = label.frame;
+    rect.size.width = ceilf(rect.size.width/2.0f) * 2.0f;
+    rect.size.height = ceilf(rect.size.height/2.0f) * 2.0f;
+    label.frame = rect;
+    label.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), CGRectGetMidY(self.scrollView.bounds));
+    
+    [self.view addSubview:label];
+}
 
 @end
