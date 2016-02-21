@@ -399,6 +399,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shiziwen.test.StoreSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+					"-Wno-unused-parameter",
+				);
 			};
 			name = Debug;
 		};
@@ -411,6 +417,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shiziwen.test.StoreSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+					"-Wno-unused-parameter",
+				);
 			};
 			name = Release;
 		};
