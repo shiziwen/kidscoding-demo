@@ -1,0 +1,21 @@
+
+/* Class = "UILabel"; text = "Artist Name"; ObjectID = "8ut-Gs-PwG"; */
+"8ut-Gs-PwG.text" = "Artist Name";
+
+/* Class = "UILabel"; text = "Type:"; ObjectID = "EBf-Fb-p3A"; */
+"EBf-Fb-p3A.text" = "Soort:";
+
+/* Class = "UILabel"; text = "Kind Value"; ObjectID = "GVt-Ak-WJf"; */
+"GVt-Ak-WJf.text" = "Kind Value";
+
+/* Class = "UIButton"; normalTitle = "$9.99"; ObjectID = "NnG-5X-igy"; */
+"NnG-5X-igy.normalTitle" = "$9.99";
+
+/* Class = "UILabel"; text = "Genre Value"; ObjectID = "RCK-AS-Ktd"; */
+"RCK-AS-Ktd.text" = "Genre Value";
+
+/* Class = "UILabel"; text = "Genre:"; ObjectID = "VlV-er-N8I"; */
+"VlV-er-N8I.text" = "Genre:";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "Y78-Xb-cZ2"; */
+"Y78-Xb-cZ2.text" = "Name";
