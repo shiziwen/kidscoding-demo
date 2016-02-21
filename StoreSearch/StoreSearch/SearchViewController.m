@@ -197,9 +197,11 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
                        completion:^(BOOL success){
                            if (!success) {
                                [self showNetworkError];
-                           } else {
-                               [self.tableView reloadData];
                            }
+                           
+                           [_landscapeViewController searchResultsReceived];
+                           [self.tableView reloadData];
+
         
     }];
     

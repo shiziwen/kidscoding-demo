@@ -40,12 +40,27 @@
 
 }
 
+- (void)showSpinner {
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    spinner.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds) + 0.5f, CGRectGetMidY(self.scrollView.bounds) + 0.5f);
+    spinner.tag = 1000;
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+}
+
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
     if (_firstTime) {
         _firstTime = NO;
-        [self tileButtons];
+        
+        if (self.search.isLoading) {
+            [self showSpinner];
+            
+        } else {
+            [self tileButtons];
+        }        
     }
 }
 
@@ -109,6 +124,15 @@
     
     self.pageControll.numberOfPages = numPages;
     self.pageControll.currentPage = 0;
+}
+
+- (void)hideSpinner {
+    [[self.view viewWithTag:1000] removeFromSuperview];
+}
+
+- (void)searchResultsReceived {
+    [self hideSpinner];
+    [self tileButtons];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -180,5 +204,7 @@
     
 //    [button setImageForState:UIControlStateNormal withURL:url];
 }
+
+
 
 @end
