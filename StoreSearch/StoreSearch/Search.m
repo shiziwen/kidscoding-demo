@@ -96,9 +96,13 @@ static NSOperationQueue *queue = nil;
             break;
     }
     
+    NSLocale *locale = [NSLocale autoupdatingCurrentLocale];
+    NSString *language = [locale localeIdentifier];
+    NSString *countryCode = [locale objectForKey:NSLocaleCountryCode];
+    
     NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200&entity=%@", escapedSearchText, categoryName];
+    NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200&entity=%@&lang=%@&country=%@", escapedSearchText, categoryName, language, countryCode];
     
     NSURL *url = [NSURL URLWithString:urlString];
     
