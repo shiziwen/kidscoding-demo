@@ -10,6 +10,7 @@
 #import "LandscapeViewController.h"
 #import "SearchResult.h"
 #import "Search.h"
+#import "DetailViewController.h"
 
 @interface LandscapeViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -101,6 +102,9 @@
         button.frame = CGRectMake(x + marginHorz, 20.0f + row*itemHeight + marginVert, buttonWidth, buttonHeight);
         
         [self downloadImageForSearchResult:searchResult andPlaceOnButton:button];
+        
+        button.tag = 2000 + index;
+        [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.scrollView addSubview:button];
         
@@ -230,4 +234,12 @@
     [self.view addSubview:label];
 }
 
+- (void)buttonPressed:(UIButton *)sender {
+    DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+    
+    SearchResult *searchResult = self.search.searchResults[sender.tag - 2000];
+    controller.searchResult = searchResult;
+    
+    [controller presentInParentViewController:self];
+}
 @end
